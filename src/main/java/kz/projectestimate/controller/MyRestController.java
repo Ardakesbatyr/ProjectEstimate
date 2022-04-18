@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 
+import kz.projectestimate.entity.Price;
 import kz.projectestimate.entity.Result;
 import kz.projectestimate.service.ResultService;
 

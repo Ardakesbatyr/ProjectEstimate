@@ -4,33 +4,30 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-
 import kz.projectestimate.entity.Result;
-
-import kz.projectestimate.repository.ResultRepo;
+import kz.projectestimate.repository.ResultRepository;
 
 
 @Service
 public class ResultService {
 
 	@Autowired
-	private ResultRepo resultRepo;
+	private ResultRepository resultRepository;
 	
 	public List<Result> getResultList() {
-		return resultRepo.findAll();
+		return resultRepository.findAll();
 	}
 
 	public Result getResultById(Integer id) {
-		return resultRepo.findById(id).get();
+		return resultRepository.findById(id).get();
 	}
 
 	public void saveOrUpdateResult(Result result) {
-		resultRepo.save(result);
+		resultRepository.save(result);
 	}
 	
 	public void deleteResult(Integer id) {
-		resultRepo.deleteById(id);
+		resultRepository.deleteById(id);
 	}
 
 }

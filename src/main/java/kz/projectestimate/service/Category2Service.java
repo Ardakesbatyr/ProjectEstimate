@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import kz.projectestimate.entity.Category2;
 import kz.projectestimate.entity.CategoryDto;
+import kz.projectestimate.entity.CategoryNameDto;
 import kz.projectestimate.entity.CategoryPostDto;
 import kz.projectestimate.repository.Category2Repository;
 
@@ -116,6 +117,22 @@ public class Category2Service {
 
 	public void deleteCategory(Integer id) {
 		categoryRepository.deleteById(id);
+	}
+
+	public List<CategoryNameDto> getParentCategoryList() {
+		
+		List<Category2> categories = categoryRepository.findAll();
+
+		List<CategoryNameDto> parentCategoryDtos = new ArrayList<>();
+
+		for (Category2 category : categories) {
+
+			if (category.getParent() == null) {
+
+				//parentCategoryDtos.add(convertToDto(category)); // get parent cartegory
+			}
+		}
+		return parentCategoryDtos;
 	}
 
 }

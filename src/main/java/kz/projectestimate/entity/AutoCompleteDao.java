@@ -8,7 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import kz.projectestimate.repository.CategoryRepository;
-import kz.projectestimate.repository.ResultRepo;
+import kz.projectestimate.repository.ResultRepository;
 import kz.projectestimate.service.Category2Service;
 
 public class AutoCompleteDao {

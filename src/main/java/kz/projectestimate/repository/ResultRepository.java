@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import kz.projectestimate.entity.Result;
 
 
-public interface ResultRepo extends JpaRepository<Result, Integer>{
+public interface ResultRepository extends JpaRepository<Result, Integer>{
 
 }

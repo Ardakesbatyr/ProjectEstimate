@@ -30,6 +30,11 @@ public class IndexController {
 	public String categoryPage() {
 		return "category";
 	}
+	
+	@GetMapping("/new_estimate")
+	public String newEstimatePage() {
+		return "new_estimate";
+	}
 
 }
 

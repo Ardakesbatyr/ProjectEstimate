@@ -15,11 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kz.projectestimate.entity.Category2;
 import kz.projectestimate.entity.CategoryDto;
+import kz.projectestimate.entity.CategoryNameDto;
 import kz.projectestimate.entity.CategoryPostDto;
 import kz.projectestimate.service.Category2Service;;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:8080/category")
+@CrossOrigin(origins = {"http://localhost:8080/category", "http://localhost:8080/new_estimate"})
 public class Category2RestController {
 
 	@Autowired
@@ -46,6 +47,16 @@ public class Category2RestController {
 	public ResponseEntity<Void> deleteCategory(@PathVariable Integer id) {
 		categoryService.deleteCategory(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+	
+	/***************************************************
+	 * 
+	 * @return
+	 */
+	@GetMapping("/parentCategoryList")
+	public ResponseEntity<List<CategoryNameDto>> getParentCategoryList() {
+		List<CategoryNameDto> parentCategoryDto = categoryService.getParentCategoryList();
+		return new ResponseEntity<List<CategoryNameDto>>(parentCategoryDto, HttpStatus.OK);
 	}
 
 }
