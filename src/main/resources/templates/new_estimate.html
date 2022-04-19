@@ -30,15 +30,34 @@
 			
 			$(document).delegate('#addNew', 'click', function(event) {
 				event.preventDefault();
+
+				var customName = $('#customName').val();
 				
-				var name = $('#name').val();
-				var parent2 = $('#parent2').val();
+				var valueX = $('#valueX').val();
+					
+				var valueP2= $('#valueP2').val();
+				
+				var valueP3= $('#valueP3').val();
+				
+				var valueP4= $('#valueP4').val();
+				
+				var valueK= $('#valueK').val();
+					
+				var section= $('#section').val();
+				
+				var subsection= $('#subsection').val();
+				
+				var chapter= $('#chapter').val();
+				
+				var tableName= $('#tableName').val();
+				
+				var position= $('#position').val();
 				
 				$.ajax({
 					type: "POST",
 					contentType: "application/json; charset=utf-8",
-					url: "http://localhost:8080/category/save",
-					data: JSON.stringify({'name': name, 'parent2': parent2}),
+					url: "http://localhost:8080/result/save",
+					data: JSON.stringify({'customName': customName, 'valueX':valueX, 'valueP2':valueP2, 'valueP3':valueP3,'valueP4':valueP4,'valueK':valueK, 'section':section, 'subsection':subsection, 'chapter':chapter, 'tableName':tableName, 'position': position}),
 					cache: false,
 					success: function(result) {
 						$("#msg").html( "<span style='color: green'>Company added successfully</span>" );
@@ -162,55 +181,74 @@
 		</p>
 
 		<p>
-			<label for="table">Choose a table:</label> <select name="table"
-				id="table">
+			<label for="table_name">Choose a table:</label> 
+			<select name="table_name" id="table_name">
 				<option value="none">list of tables</option>
 			</select>
 		</p>
 
 		<p>
-			<label for="position">Choose a position:</label> <select
-				name="position" id="position">
+			<label for="position">Choose a position:</label> 
+			<select	name="position" id="position">
 				<option value="none">list of positions</option>
 			</select>
 		</p>
-
+		
 		<p>
-			<label>Input custom name of work</label> <input type="text"
-				id="customName" name="customName">
+			<label>Input custom name of work</label> 
+			<input type="text"  id="customName" name="customName">
 		</p>
 
 		<p>
-			<label>Input custom valueX</label> <input type="number" id="valueX"
-				name="valueX"> &nbsp; <input type="text" id="unit"
-				name="unit" size="10px">
+			<label>Input custom valueX</label> 
+			<input type="number" id="valueX" name="valueX"> &nbsp; 
+				<input type="text" id="unit" name="unit" size="10px"> </input>
 		</p>
 
 		<p>
-			<label>Input valueP2*</label> <select name="valueP2" id="valueP2">
+			<label for="valueXmax">Default value of valueXmax:</label> 
+			<input type="number" id="valueXmax" name="valueXmax" size="10px"> </input>
+			</p>
+		
+		<p>
+			<label for="valueXmin">Default value of valueXmin:</label> 
+			<input type="number" id="valueXmin" name="valueXmin" size="10px"> </input>
+		</p>
+		
+		<p>
+			<label for="valueK">Choose K****:</label> 
+			<select name="valueK" id="valueK">
+				<option value="1" id="valueK1">Коэффициент на стадии «проект»</option>
+				<option value="1" id="valueK2">Коэффициент на стадиях «рабочий проект» и «рабочая документация»</option>
+			</select>
+		</p>
+		
+
+		<p>
+			<label for="valueK">Поправочные коэффициенты при наличии факторов, усложняющих проектирование, P2*</label> 
+			<select name="valueP2" id="valueP2">
+				<option value="1" id="valueP2a">нет</option>
+				<option value="1" id="valueP2b">Просадочные, набухающие грунты; карстовые и оползневые явления; расположение площадки строительства над горными выработками, в подтапливаемых зонах</option>
+				<option value="1" id="valueP2c">Сейсмичность 7 баллов</option>
+				<option value="1" id="valueP2d">Сейсмичность 8 баллов</option>
+				<option value="1" id="valueP2f">Сейсмичность 9 баллов</option>
+			</select>
+		</p>
+
+		<p>
+			<label>Input valueP3**</label> 
+			<select name="valueP2" id="valueP3">
 				<option value="1">default value 1</option>
 			</select>
 		</p>
 
 		<p>
-			<label>Input valueP3**</label> <select name="valueP2" id="valueP3">
-				<option value="1">default value 1</option>
-			</select>
-		</p>
-
-		<p>
-			<label>Input valueP4***</label> <select name="valueP4" id="valueP4">
+			<label>Input valueP4***</label> 
+			<select name="valueP4" id="valueP4">
 				<option value="1" selected="selected">default value 1</option>
 			</select>
 		</p>
-
-		<p>
-			<label for="valueK">Choose K****:</label> <select name="valueK"
-				id="valueK">
-				<option value="1">default value 1</option>
-			</select>
-		</p>
-
+		
 		<p>
 			<input type="submit" id="addNew" value="Submit">
 		</p>
@@ -220,6 +258,7 @@
 
 <script>
     $(document).ready(function () {
+       
         $('#section').click(function () {
             
             var url = "http://localhost:8080/sectionList";
@@ -236,8 +275,8 @@
             
             
             $('#subsection').click(function () {
-            var myValue = $("#section").val();
-            var url = 'http://localhost:8080/subsectionList/'+myValue;
+            var section = $("#section").val();
+            var url = 'http://localhost:8080/subsectionList/'+section;
 
             $.getJSON(url, function (data) {
            
@@ -250,12 +289,89 @@
             });
             
             
-            
+            $('#chapter').click(function () {
+            var subsection = $("#subsection").val();
+            var url = 'http://localhost:8080/chapterList/'+subsection;
+
+            $.getJSON(url, function (data) {
            
-			
-      
-      
-         
-     });
+                $.each(data, function (index, value) {
+                  
+                    $('#chapter').append('<option value="' + value.id + '">' + value.chapter + '</option>');
+            		});
+                    
+                });
+            });
+            
+            
+            $('#table_name').click(function () {
+            var chapter = $("#chapter").val();
+            var url = 'http://localhost:8080/tableList/'+chapter;
+
+            $.getJSON(url, function (data) {
+           
+                $.each(data, function (index, value) {
+                  
+                    $('#table_name').append('<option value="' + value.id + '">' + value.tableName + '</option>');
+            		});
+                    
+                });
+            });
+            
+            
+            $('#position').click(function () {
+            var table_name = $("#table_name").val();
+            var url = 'http://localhost:8080/positionList/'+table_name;
+
+            $.getJSON(url, function (data) {
+           
+                $.each(data, function (index, value) {
+                  
+                    $('#position').append('<option value="' + value.id + '">' + value.position + '</option>');
+              		});
+            		
+            		
+            		});
+                      
+  				});
+  				
+  				
+  				
+  				 $('#customName').click(function () {
+			            var position = $("#position").val();
+			            var url = 'http://localhost:8080/positionData/'+position;
+				        $.getJSON(url, function (data) {
+			   			        $('#valueXmax').val(data.valueXmax);
+			   			        $('#valueXmin').val(data.valueXmin); 
+			   			        $('#unit').val(data.unit);  
+			   			        $('#valueK1').val(data.valueK1);
+			   			        $('#valueK2').val(data.valueK2); 			
+			               	});
+			       		});
+			       		
+			    $('#valueP2').click(function () {
+			     	var valueK = $("#valueK").val();
+			    	if (valueK==valueK1) {
+	    				$('#valueP2b').val(1.05);
+	   			        $('#valueP2c').val(1.05);
+	   			        $('#valueP2d').val(1.1);
+	   			        $('#valueP2f').val(1.1);
+	    	    	}
+			    	if (valueK==valueK2) {
+			      		$('#valueP2b').val(1.2);
+	   			        $('#valueP2c').val(1.2);
+	   			        $('#valueP2d').val(1.3);
+	   			        $('#valueP2f').val(1.4);
+			    	}
+			    	
+			    });
+			    
+			    $('#valueP3').click(function () {
+			     	var valueP2 = $("#valueP2").val();
+			    	alert(valueP2);
+			    });
+   	
+});
+       
 </script>
 </html>

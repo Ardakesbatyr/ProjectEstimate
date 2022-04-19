@@ -54,5 +54,31 @@ public class PriceRestController {
 	public ResponseEntity<List<Price>> getSubSectionListBySection(@PathVariable("section") String section) {
 		return new ResponseEntity<List<Price>>(priceService.getSubSectionListBySection(section), HttpStatus.OK);
 	}
+	
+	@GetMapping("/chapterList/{subsection}")
+	public ResponseEntity<List<Price>> getChapterListBySubsection(@PathVariable("subsection") String subsection) {
+		return new ResponseEntity<List<Price>>(priceService.getChapterListBySubsection(subsection), HttpStatus.OK);
+	}
+	
+	@GetMapping("/tableList/{chapter}")
+	public ResponseEntity<List<Price>> getTableListByChapter(@PathVariable("chapter") String chapter) {
+		return new ResponseEntity<List<Price>>(priceService.getTableListByChapter(chapter), HttpStatus.OK);
+	}
+	
+	@GetMapping("/positionList/{table_name}")
+	public ResponseEntity<List<Price>> getPositionListByTable(@PathVariable("table_name") String table_name) {
+		return new ResponseEntity<List<Price>>(priceService.getPositionListByTable(table_name), HttpStatus.OK);
+	}
+	
+//	@GetMapping("/positionData/{position}")
+//	public ResponseEntity<Price> getPriceByPosition(@PathVariable("position") String position) {
+//		return new ResponseEntity<Price>(priceService.getPriceByPosition(position), HttpStatus.OK);
+//	}
+	
+	@GetMapping("/positionData/{position}")
+	public ResponseEntity<Price> getPriceByPosition(@PathVariable("position") Integer position) {
+		return new ResponseEntity<Price>(priceService.getPriceById(position), HttpStatus.OK);
+	}
+	
 
 }

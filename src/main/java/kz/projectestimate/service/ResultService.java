@@ -23,11 +23,14 @@ public class ResultService {
 	}
 
 	public void saveOrUpdateResult(Result result) {
+
 		resultRepository.save(result);
 	}
 	
 	public void deleteResult(Integer id) {
 		resultRepository.deleteById(id);
 	}
+	
+
 
 }

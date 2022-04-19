@@ -1,6 +1,6 @@
 package kz.projectestimate.entity;
 
-import java.io.Serializable;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +18,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "price")
-public class Price implements Serializable{
+public class Price{
 	
 	@Id
 	@Column(name = "id")

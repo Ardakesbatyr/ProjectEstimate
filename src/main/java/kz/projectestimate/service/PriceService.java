@@ -36,5 +36,21 @@ public class PriceService {
 		return priceRepository.findSubSectionBySection(section);
 	}
 
+	public List<Price> getChapterListBySubsection(String subsection) {
+		return priceRepository.findChapterListBySubsection(subsection);
+	}
+
+	public List<Price> getTableListByChapter(String chapter) {
+		return priceRepository.findTableListByChapter(chapter);
+	}
+
+	public List<Price> getPositionListByTable(String table_name) {
+		return priceRepository.findPositionListByTable(table_name);
+	}
+
+	public Price getPriceByPosition(String position) {
+		return priceRepository.findPriceByPosition(position);
+	}
+
 
 }

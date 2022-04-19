@@ -1,6 +1,6 @@
 package kz.projectestimate.entity;
 
-import java.io.Serializable;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +18,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "result")
-public class Result implements Serializable{
+public class Result{
 	
 	@Id
 	@Column(name = "id")
@@ -63,6 +63,5 @@ public class Result implements Serializable{
 	
 	@Column(name = "position", length = 128, nullable=true)
 	private String position;
-
 
 }
