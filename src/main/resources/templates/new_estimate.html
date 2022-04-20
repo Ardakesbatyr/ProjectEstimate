@@ -34,6 +34,14 @@
 				var customName = $('#customName').val();
 				
 				var valueX = $('#valueX').val();
+				
+				var valueXmax = $('#valueXmax').val();
+				
+				var valueXmin = $('#valueXmin').val();
+				
+				var valueA = $('#valueA').val();
+				
+				var valueB = $('#valueB').val();
 					
 				var valueP2= $('#valueP2').val();
 				
@@ -49,7 +57,7 @@
 				
 				var chapter= $('#chapter').val();
 				
-				var tableName= $('#tableName').val();
+				var tableName= $('#table_name').val();
 				
 				var position= $('#position').val();
 				
@@ -57,7 +65,7 @@
 					type: "POST",
 					contentType: "application/json; charset=utf-8",
 					url: "http://localhost:8080/result/save",
-					data: JSON.stringify({'customName': customName, 'valueX':valueX, 'valueP2':valueP2, 'valueP3':valueP3,'valueP4':valueP4,'valueK':valueK, 'section':section, 'subsection':subsection, 'chapter':chapter, 'tableName':tableName, 'position': position}),
+					data: JSON.stringify({'customName': customName, 'valueX':valueX, 'valueXmax':valueXmax, 'valueXmin':valueXmin, 'valueA':valueA,'valueB':valueB,'valueP2':valueP2, 'valueP3':valueP3,'valueP4':valueP4,'valueK':valueK, 'section':section, 'subsection':subsection, 'chapter':chapter, 'tableName':tableName, 'position': position}),
 					cache: false,
 					success: function(result) {
 						$("#msg").html( "<span style='color: green'>Company added successfully</span>" );
@@ -131,6 +139,15 @@
 		});
 		
 	</script>
+	
+	<style>
+   p.clip {
+    white-space: normal; /* Запрещаем перенос строк */
+    overflow: auto; /* Обрезаем все, что не помещается в область */
+    text-overflow: inherit; /* Добавляем многоточие */
+    width: "600px";
+    }
+  	</style>
 
 </head>
 
@@ -159,97 +176,102 @@
 		<div id='msg' />
 		<h3>Add new design position</h3>
 
-		<p>
+		<p class="clip">
 			<label for="section">Choose a section:</label> 
-			<select name="section" id="section">
+			<select name="section" id="section" >
 				<option value="none">list of sections</option>
 			</select>
 		</p>
 
-		<p>
-			<label for="subsection">Choose a subsection:</label> <select
-				name="subsection" id="subsection">
+		<p class="clip">
+			<label for="subsection">Choose a subsection:</label> 
+			<select	name="subsection" id="subsection">
 				<option value="none">list of subsections</option>
 			</select>
 		</p>
 
-		<p>
+		<p class="clip">
 			<label for="chapter">Choose a chapter:</label> <select name="chapter"
 				id="chapter">
 				<option value="none">list of chapters</option>
 			</select>
 		</p>
 
-		<p>
+		<p class="clip">
 			<label for="table_name">Choose a table:</label> 
-			<select name="table_name" id="table_name">
+			<select	name="table_name" id="table_name">
 				<option value="none">list of tables</option>
 			</select>
 		</p>
 
-		<p>
-			<label for="position">Choose a position:</label> 
-			<select	name="position" id="position">
+		<p class="clip">
+			<label for="position">Choose a position:</label> <select
+				name="position" id="position">
 				<option value="none">list of positions</option>
 			</select>
 		</p>
-		
-		<p>
-			<label>Input custom name of work</label> 
-			<input type="text"  id="customName" name="customName">
+
+		<p class="clip">
+			<label>Input custom name of work</label> <input type="text"
+				id="customName" name="customName">
 		</p>
 
-		<p>
-			<label>Input custom valueX</label> 
-			<input type="number" id="valueX" name="valueX"> &nbsp; 
-				<input type="text" id="unit" name="unit" size="10px"> </input>
+		<p class="clip">
+			<label>Input custom valueX</label> <input type="number" id="valueX"
+				name="valueX"> &nbsp; <input type="text" id="unit"
+				name="unit" size="10px" readonly> </input>
 		</p>
 
-		<p>
-			<label for="valueXmax">Default value of valueXmax:</label> 
-			<input type="number" id="valueXmax" name="valueXmax" size="10px"> </input>
-			</p>
-		
-		<p>
-			<label for="valueXmin">Default value of valueXmin:</label> 
-			<input type="number" id="valueXmin" name="valueXmin" size="10px"> </input>
+		<p class="clip">
+			<label for="valueXmax">Default value of valueXmax:</label> <input
+				type="number" id="valueXmax" name="valueXmax" size="10px" readonly> </input>
+		</p>
+
+		<p class="clip">
+			<label for="valueXmin">Default value of valueXmin:</label> <input
+				type="number" id="valueXmin" name="valueXmin" size="10px" readonly> </input>
 		</p>
 		
-		<p>
+		<p class="clip">
+			<label for="valueA">Default value of valueA:</label> <input
+				type="number" id="valueA" name="valueA" size="10px" readonly> </input>
+		</p>
+		
+		<p class="clip">
+			<label for="valueB">Default value of valueB:</label> <input
+				type="number" id="valueB" name="valueB" size="10px" readonly> </input>
+		</p>
+
+		<p class="clip">
 			<label for="valueK">Choose K****:</label> 
 			<select name="valueK" id="valueK">
-				<option value="1" id="valueK1">Коэффициент на стадии «проект»</option>
-				<option value="1" id="valueK2">Коэффициент на стадиях «рабочий проект» и «рабочая документация»</option>
-			</select>
-		</p>
-		
-
-		<p>
-			<label for="valueK">Поправочные коэффициенты при наличии факторов, усложняющих проектирование, P2*</label> 
-			<select name="valueP2" id="valueP2">
-				<option value="1" id="valueP2a">нет</option>
-				<option value="1" id="valueP2b">Просадочные, набухающие грунты; карстовые и оползневые явления; расположение площадки строительства над горными выработками, в подтапливаемых зонах</option>
-				<option value="1" id="valueP2c">Сейсмичность 7 баллов</option>
-				<option value="1" id="valueP2d">Сейсмичность 8 баллов</option>
-				<option value="1" id="valueP2f">Сейсмичность 9 баллов</option>
+				<option value="K1" id="valueK1" name="valueK2">Коэффициент на стадии «проект»</option>
+				<option value="K2" id="valueK2" name="valueK2">Коэффициент на стадиях «рабочий проект» и «рабочая документация»</option>
 			</select>
 		</p>
 
-		<p>
-			<label>Input valueP3**</label> 
-			<select name="valueP2" id="valueP3">
-				<option value="1">default value 1</option>
+
+		<p class="clip">
+			<label for="valueP2">Поправочные коэффициенты при наличии
+				факторов, усложняющих проектирование, P2*</label> 
+				<select name="valueP2" id="valueP2">
+					<option value="1" selected="selected">Не применять, нет указанных факторов</option>
+				</select>
+		</p>
+
+		<p class="clip">
+			<label>Input valueP3**</label> <select name="valueP2" id="valueP3">
+				<option value="1" selected="selected">Не применять, нет указанных факторов</option>
 			</select>
 		</p>
 
-		<p>
-			<label>Input valueP4***</label> 
-			<select name="valueP4" id="valueP4">
-				<option value="1" selected="selected">default value 1</option>
+		<p class="clip">
+			<label>Input valueP4***</label> <select name="valueP4" id="valueP4">
+				<option value="1" selected="selected">Не применять, нет указанных факторов</option>
 			</select>
 		</p>
-		
-		<p>
+
+		<p class="clip">
 			<input type="submit" id="addNew" value="Submit">
 		</p>
 	</form>
@@ -267,7 +289,7 @@
            
                 $.each(data, function (index, value) {
                     // APPEND OR INSERT DATA TO SELECT ELEMENT.
-                    $('#section').append('<option value="' + value.id + '">' + value.section + '</option>');
+                    $('#section').append('<option value="' + value.section + '">' + value.section + '</option>');
             		});
                     
                 });
@@ -282,7 +304,7 @@
            
                 $.each(data, function (index, value) {
                   
-                    $('#subsection').append('<option value="' + value.id + '">' + value.subsection + '</option>');
+                    $('#subsection').append('<option value="' + value.subsection + '">' + value.subsection + '</option>');
             		});
                     
                 });
@@ -297,7 +319,7 @@
            
                 $.each(data, function (index, value) {
                   
-                    $('#chapter').append('<option value="' + value.id + '">' + value.chapter + '</option>');
+                    $('#chapter').append('<option value="' + value.chapter + '">' + value.chapter + '</option>');
             		});
                     
                 });
@@ -312,7 +334,7 @@
            
                 $.each(data, function (index, value) {
                   
-                    $('#table_name').append('<option value="' + value.id + '">' + value.tableName + '</option>');
+                    $('#table_name').append('<option value="' + value.tableName + '">' + value.tableName + '</option>');
             		});
                     
                 });
@@ -321,6 +343,7 @@
             
             $('#position').click(function () {
             var table_name = $("#table_name").val();
+             
             var url = 'http://localhost:8080/positionList/'+table_name;
 
             $.getJSON(url, function (data) {
@@ -344,33 +367,80 @@
 			   			        $('#valueXmax').val(data.valueXmax);
 			   			        $('#valueXmin').val(data.valueXmin); 
 			   			        $('#unit').val(data.unit);  
+			   			        $('#valueA').val(data.valueA);
+			   			        $('#valueB').val(data.valueB);	
 			   			        $('#valueK1').val(data.valueK1);
-			   			        $('#valueK2').val(data.valueK2); 			
+			   			        $('#valueK2').val(data.valueK2);
 			               	});
 			       		});
 			       		
-			    $('#valueP2').click(function () {
-			     	var valueK = $("#valueK").val();
-			    	if (valueK==valueK1) {
-	    				$('#valueP2b').val(1.05);
-	   			        $('#valueP2c').val(1.05);
-	   			        $('#valueP2d').val(1.1);
-	   			        $('#valueP2f').val(1.1);
-	    	    	}
-			    	if (valueK==valueK2) {
-			      		$('#valueP2b').val(1.2);
-	   			        $('#valueP2c').val(1.2);
-	   			        $('#valueP2d').val(1.3);
-	   			        $('#valueP2f').val(1.4);
-			    	}
-			    	
+			       		
+			    $('#valueK').click(function () {
+			    	var valueK = $("#valueK").val();
+			    	var url = 'http://localhost:8080/positionData/'+position;
+				        $.getJSON(url, function (data) {
+			    	if (valueK==K1) {
+			               $('#valueK').append('<option value="' + value.valueK1 + '">' + value.valueK1 + '</option>');
+			             }
+                   	else {
+                   	 		$('#valueK').append('<option value="' + value.valueK2 + '">' + value.valueK2 + '</option>');		
+                   	}
+                   	});
 			    });
+			       		
+    			       		
+			    $('#valueP2').click(function () {
+			    var valueK = $("#valueK").val();
+			    var valueK1 = $("#valueK1").val();
+			    var valueK2 = $("#valueK2").val();
+			        var url = 'http://localhost:8080/application2List';
+			
+			        $.getJSON(url, function (data) {
+			          
+			               $.each(data, function (index, value) {
+			                 	if (valueK==valueK1) {
+			                   		$('#valueP2').append('<option value="' + value.ratio1 + '">' + value.name + '</option>');
+			                   	}
+			                   	else {
+			                   	$('#valueP2').append('<option value="' + value.ratio2 + '">' + value.name + '</option>');
+			                   	}
+				            });
+				    });
+			 	});
 			    
 			    $('#valueP3').click(function () {
-			     	var valueP2 = $("#valueP2").val();
-			    	alert(valueP2);
-			    });
-   	
+			    	var value1 = $("#valueP2").val();
+			    	alert(value1);
+			    	
+			        var url = 'http://localhost:8080/application3List';
+			
+			        $.getJSON(url, function (data) {
+			          
+			               $.each(data, function (index, value) {
+			                 	
+			                   		$('#valueP3').append('<option value="' + value.ratio + '">' + value.name + '</option>');
+			                   
+				            });
+				    });
+			 	});
+			 	
+			 	$('#valueP4').click(function () {
+			   
+			        var url = 'http://localhost:8080/application4List';
+			
+			        $.getJSON(url, function (data) {
+			          
+			               $.each(data, function (index, value) {
+			                 
+			                   		$('#valueP4').append('<option value="' + value.ratio + '">' + value.name + '</option>');
+			                   	
+				            });
+				    });
+			 	});
+			 	
+			 	
+			 	
+  	
 });
        
 </script>

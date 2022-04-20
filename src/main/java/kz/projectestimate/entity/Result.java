@@ -34,8 +34,20 @@ public class Result{
 	@Column(name = "value_x", nullable=true)
 	private Integer valueX;
 	
+	@Column(name = "value_xmax", nullable=true)
+	private Integer valueXmax;
+	
+	@Column(name = "value_xmin", nullable=true)
+	private Integer valueXmin;
+	
+	@Column(name = "value_a", nullable=true)
+	private Integer valueA;
+	
+	@Column(name = "value_b", nullable=true)
+	private Integer valueB;
+	
 	@Column(name = "cost", nullable=true)
-	private Integer cost;
+	private Double cost;
 	
 	@Column(name = "value_p2", nullable=true)
 	private Double valueP2;

@@ -27,8 +27,8 @@ public class Application2 {
 	private String name;
 	
 	@Column(name = "ratio1", nullable=true)
-	private Integer ratio1;
+	private Double ratio1;
 	
 	@Column(name = "ratio2", nullable=true)
-	private Integer ratio2;
+	private Double ratio2;
 }

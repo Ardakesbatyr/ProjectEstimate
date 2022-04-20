@@ -23,8 +23,28 @@ public class ResultService {
 	}
 
 	public void saveOrUpdateResult(Result result) {
-
-		resultRepository.save(result);
+		Result newResult=new Result();
+		newResult.setCustomName(result.getCustomName());
+		newResult.setNameOfPrice(result.getTableName()+" , "+result.getPosition());
+		
+		Integer valueX = result.getValueX();
+		Integer valueXmax = result.getValueXmax();
+		Integer valueXmin = result.getValueXmin();
+		Integer valueA = result.getValueA();
+		Integer valueB = result.getValueB();
+		Double valueK = result.getValueK();
+		Double valueP2 = result.getValueP2();
+		Double valueP3 = result.getValueP3();
+		Double valueP4 = result.getValueP4();
+		
+		if (valueXmin < valueX && valueX < valueXmax) {
+			newResult.setCost((valueA+valueB*valueX)*valueP2*valueP3*valueP4*valueK);
+		} else if (valueX < valueXmin) {
+			newResult.setCost((valueA+valueB*(0.4*valueXmin+0.6*valueX))*valueP2*valueP3*valueP4*valueK);
+		} else if (valueX > valueXmax) {
+			newResult.setCost((valueA+valueB*(0.4*valueXmax+0.6*valueX))*valueP2*valueP3*valueP4*valueK);
+		}
+		resultRepository.save(newResult);
 	}
 	
 	public void deleteResult(Integer id) {
