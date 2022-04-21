@@ -76,8 +76,8 @@ public class PriceRestController {
 //	}
 	
 	@GetMapping("/positionData/{position}")
-	public ResponseEntity<Price> getPriceByPosition(@PathVariable("position") Integer position) {
-		return new ResponseEntity<Price>(priceService.getPriceById(position), HttpStatus.OK);
+	public ResponseEntity<Price> getPriceByPosition(@PathVariable("position") String position) {
+		return new ResponseEntity<Price>(priceService.getPriceByPosition(position), HttpStatus.OK);
 	}
 	
 

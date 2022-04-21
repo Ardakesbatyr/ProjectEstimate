@@ -30,7 +30,7 @@ public class ResultRestController {
 		return new ResponseEntity<List<Result>>(resultService.getResultList(), HttpStatus.OK);
 	}
 
-	@GetMapping("/result/{id}")
+	@GetMapping("/result/id/{id}")
 	public ResponseEntity<Result> getResult(@PathVariable Integer id) {
 		return new ResponseEntity<Result>(resultService.getResultById(id), HttpStatus.OK);
 	}
@@ -39,6 +39,11 @@ public class ResultRestController {
 	public ResponseEntity<Void> saveOrUpdateResult(@RequestBody Result result) {
 		resultService.saveOrUpdateResult(result);
 		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+	
+	@GetMapping("/result/estimateId/{estimateId}")
+	public ResponseEntity<List<Result>> getResultByEstimateId(@PathVariable Integer estimateId) {
+		return new ResponseEntity<List<Result>>(resultService.getResultByEstimateId(estimateId), HttpStatus.OK);
 	}
 
 	@DeleteMapping("/result/delete/{id}")

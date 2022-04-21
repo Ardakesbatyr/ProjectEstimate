@@ -8,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -75,5 +74,11 @@ public class Result{
 	
 	@Column(name = "position", length = 128, nullable=true)
 	private String position;
+	
+	@Column(name = "total", nullable=true)
+	private Double total;
+	
+	@Column(name = "estimate_id", nullable=true)
+	private Integer estimateId;
 
 }

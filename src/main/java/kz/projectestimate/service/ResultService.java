@@ -23,6 +23,7 @@ public class ResultService {
 	}
 
 	public void saveOrUpdateResult(Result result) {
+		
 		Result newResult=new Result();
 		newResult.setCustomName(result.getCustomName());
 		newResult.setNameOfPrice(result.getTableName()+" , "+result.getPosition());
@@ -44,11 +45,32 @@ public class ResultService {
 		} else if (valueX > valueXmax) {
 			newResult.setCost((valueA+valueB*(0.4*valueXmax+0.6*valueX))*valueP2*valueP3*valueP4*valueK);
 		}
+		
+			newResult.setEstimateId(result.getEstimateId());
+			newResult.setValueX(valueX);
+			
+			List<Result> listResult = getResultByEstimateId(result.getEstimateId());
+			if (listResult.size()>0) {
+			for (Result oneResult: listResult) {
+				Double subtotal = oneResult.getTotal();
+				Double newCost = newResult.getCost();
+				Double total =subtotal+newCost;
+				newResult.setTotal(total);
+				}
+			}
+			else {
+				Double cost = newResult.getCost();
+				newResult.setTotal(cost);
+			}
 		resultRepository.save(newResult);
 	}
 	
 	public void deleteResult(Integer id) {
 		resultRepository.deleteById(id);
+	}
+
+	public List<Result> getResultByEstimateId(Integer estimateId) {
+		return resultRepository.findResultByEstimateId(estimateId);
 	}
 	
 

@@ -28,6 +28,7 @@ public interface PriceRepository extends JpaRepository<Price, Integer>{
 //	@Query(value = "SELECT * FROM schema_estimate.price WHERE position LIKE '%1%'", nativeQuery = true)
 //	public Price findPriceByPosition(String position);
 	
+	@Query(value = "SELECT * FROM schema_estimate.price WHERE position=?1", nativeQuery = true)
 	public Price findPriceByPosition(String position);
 	
 	
