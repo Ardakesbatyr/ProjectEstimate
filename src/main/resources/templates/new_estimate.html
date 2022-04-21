@@ -32,6 +32,8 @@
 			$(document).delegate('#addNew', 'click', function(event) {
 				event.preventDefault();
 				
+				var email = $('#authorName').val();
+				
 				var estimateId = $('#estimateId').val();
 				
 				var customName = $('#customName').val();
@@ -64,11 +66,13 @@
 				
 				var position= $('#position').val();
 				
+				var currentTime= $('#currenttime').val();
+				
 				$.ajax({
 					type: "POST",
 					contentType: "application/json; charset=utf-8",
 					url: "http://localhost:8080/result/save",
-					data: JSON.stringify({'estimateId': estimateId, 'customName': customName, 'valueX':valueX, 'valueXmax':valueXmax, 'valueXmin':valueXmin, 'valueA':valueA,'valueB':valueB,'valueP2':valueP2, 'valueP3':valueP3,'valueP4':valueP4,'valueK':valueK, 'section':section, 'subsection':subsection, 'chapter':chapter, 'tableName':tableName, 'position': position}),
+					data: JSON.stringify({'email': email, 'estimateId': estimateId, 'customName': customName, 'valueX':valueX, 'valueXmax':valueXmax, 'valueXmin':valueXmin, 'valueA':valueA,'valueB':valueB,'valueP2':valueP2, 'valueP3':valueP3,'valueP4':valueP4,'valueK':valueK, 'section':section, 'subsection':subsection, 'chapter':chapter, 'tableName':tableName, 'position': position, 'currentTime' : currentTime}),
 					cache: false,
 					success: function(result) {
 						$("#msg").html( "<span style='color: green'>Company added successfully</span>" );
@@ -186,26 +190,26 @@
 	</p>
 	
 	<p>
-		<label>Date:</label> 
-		<input type="date" id="date" name="date">
+		<label>Date&Time:</label> 
+		<input type="text" id="date" name="date">
 	</p>
 	
-	<p>
-		<label>Time:</label> 
-		<input type="time" id="date" name="date">
-	</p>
+	
 
 	<form id="add" action="#" class="add_form modal" style="display: none;">
 		<div id='msg' />
 		<h3>Add new design position</h3>
 		
 		<p class="clip">
-			<label for="estimateId">Set estimateId</label> 
-			<input type="number" id="estimateId" name="estimateId" size="10px" placeholder="write number like 1234"> </input>
+			<label for="authorName">e-mail</label> 
+			<input type="email" id="authorName" name="authorName" placeholder="write email like name@gmail.com" size="25px" required="required"> </input>
 		</p>
 		
-		<button type="button" id="checkEstimateId" name="checkEstimateId" >Check estimateId</button>
-
+		<p class="clip">
+			<label for="estimateId">Set estimateId</label> 
+			<input type="number" id="estimateId" name="estimateId" size="10px" placeholder="write number like 1234" required="required"> </input>
+		</p>
+		
 		<p class="clip">
 			<label for="section">Choose a section:</label> 
 			<select name="section" id="section" >
@@ -276,7 +280,7 @@
 			<label for="valueK">Choose K****:</label> 
 			<select name="valueK" id="valueK">
 				<option value="K1" id="valueK1" name="valueK2">Коэффициент на стадии «проект»</option>
-				<option value="K2" id="valueK2" name="valueK2">Коэффициент на стадиях «рабочий проект» и «рабочая документация»</option>
+				<option value="K2" id="valueK2" name="valueK2" selected="selected" >Коэффициент на стадиях «рабочий проект» и «рабочая документация»</option>
 			</select>
 		</p>
 
@@ -300,6 +304,11 @@
 				<option value="1" selected="selected">Не применять, нет указанных факторов</option>
 			</select>
 		</p>
+		
+		<p class="clip">
+			<label>Current date&time</label>
+			<input type="text" id="currenttime" name="currenttime" size="50px" readonly> </input>
+		</p>
 
 		<p class="clip">
 			<input type="submit" id="addNew" value="Submit">
@@ -311,26 +320,7 @@
 <script>
     $(document).ready(function () {
     		
-    		$('#checkEstimateId').click(function () {
-    		
-				var estimateId = $('#estimateId').val();
-
-	         	var url = 'http://localhost:8080/result/estimateId/'+estimateId;
-		           	$.getJSON(url, function (data) {
-		           	
-		           	$.each(data, function (index, value) {
-		           	  		if (estimateId==value.estimateId) {
-		           	  		alert("estimateId is exist");
-           				}
-           				else {
-           					alert("estimateId is not exist");
-           				}
-           				
-           				});
-           			});
-             });
- 
-       
+     
         $('#section').click(function () {
             
             var url = "http://localhost:8080/sectionList";
@@ -413,7 +403,20 @@
   				 $('#customName').click(function () {
 			            var position = $("#position").val();
 			            var url = 'http://localhost:8080/positionData/'+position;
-				        $.getJSON(url, function (data) {
+			            			            
+			            var today = new Date();
+
+						var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+						
+						var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+						
+						var dateTime = date+' '+time;
+			           
+						var authorName = $("#authorName").val();
+						$('#currenttime').val(dateTime);
+			   			$('#authorName').val(authorName);
+			   				
+			 	        $.getJSON(url, function (data) {
 			   			        $('#valueXmax').val(data.valueXmax);
 			   			        $('#valueXmin').val(data.valueXmin); 
 			   			        $('#unit').val(data.unit);  
@@ -421,6 +424,7 @@
 			   			        $('#valueB').val(data.valueB);	
 			   			        $('#valueK1').val(data.valueK1);
 			   			        $('#valueK2').val(data.valueK2);
+			   			       
 			               	});
 			       		});
 			       		
@@ -443,7 +447,7 @@
 			    var valueK = $("#valueK").val();
 			    var valueK1 = $("#valueK1").val();
 			    var valueK2 = $("#valueK2").val();
-			        var url = 'http://localhost:8080/application2List';
+			    var url = 'http://localhost:8080/application2List';
 			
 			        $.getJSON(url, function (data) {
 			          
@@ -473,7 +477,7 @@
 			 	});
 			 	
 			 	$('#valueP4').click(function () {
-			   
+		   
 			        var url = 'http://localhost:8080/application4List';
 			
 			        $.getJSON(url, function (data) {
@@ -483,6 +487,7 @@
 			                   		$('#valueP4').append('<option value="' + value.ratio + '">' + value.name + '</option>');
 			                   	
 				            });
+					            
 				    });
 			 	});
 			 	

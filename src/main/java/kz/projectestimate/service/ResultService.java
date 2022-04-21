@@ -48,6 +48,8 @@ public class ResultService {
 		
 			newResult.setEstimateId(result.getEstimateId());
 			newResult.setValueX(valueX);
+			newResult.setEmail(result.getEmail());
+			newResult.setCurrentTime(result.getCurrentTime());
 			
 			List<Result> listResult = getResultByEstimateId(result.getEstimateId());
 			if (listResult.size()>0) {

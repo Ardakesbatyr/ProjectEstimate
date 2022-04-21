@@ -24,6 +24,12 @@ public class Result{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
+	@Column(name = "email", length = 128, nullable=true)
+	private String email;
+	
+	@Column(name = "currenttime", length = 128, nullable=true)
+	private String currentTime;
+	
 	@Column(name = "custom_name", length = 128, nullable=true)
 	private String customName;
 	
@@ -80,5 +86,5 @@ public class Result{
 	
 	@Column(name = "estimate_id", nullable=true)
 	private Integer estimateId;
-
+	
 }
