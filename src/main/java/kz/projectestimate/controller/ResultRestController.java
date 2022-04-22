@@ -52,4 +52,9 @@ public class ResultRestController {
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	
+	@GetMapping("/listOfEstimateId")
+	public ResponseEntity<List<Result>> getListOfEstimateId() {
+		return new ResponseEntity<List<Result>>(resultService.getListOfEstimateId(), HttpStatus.OK);
+	}
+	
 }

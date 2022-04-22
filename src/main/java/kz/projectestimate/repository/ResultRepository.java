@@ -12,6 +12,9 @@ public interface ResultRepository extends JpaRepository<Result, Integer>{
 
 	@Query(value = "SELECT * FROM schema_estimate.result WHERE estimate_id=?1", nativeQuery = true)
 	public List<Result> findResultByEstimateId(Integer estimateId);
+	
+	@Query(value = "SELECT distinct *  FROM schema_estimate.result group by estimate_id", nativeQuery = true)
+	public List<Result> findAllEstimateId();
 
 
 }

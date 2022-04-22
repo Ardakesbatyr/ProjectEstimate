@@ -13,30 +13,47 @@
 
 <script type="text/javascript">
 		$(document).ready(function() {
+		
+			$('#selectEstimateId').one("click", function(){
+			   			
+			        var url = 'http://localhost:8080/listOfEstimateId';
 			
-			$('#searchEstimateId2').click(function () {
-				var estimateId = $("#searchEstimateId1").val();
-				$("#tableId").find("td").html('');
+			        $.getJSON(url, function (data) {
+			               $.each(data, function (index, value) {
+			               		$('#selectEstimateId').append('<option value="' + value.estimateId + '">' + value.estimateId + '</option>');
+			  	      });      
+				    });
+			 	});
+			 	
+			 	
+		
+			$('#searchDataByEstimateId').click(function (){
+				
+				$("#tableId").find("tr").html('');
+				
+				var estimateId = $("#selectEstimateId").val();
+					
 				var url = 'http://localhost:8080/result/estimateId/'+estimateId;
 				
-			$.getJSON(url, function(json) {
-				var tr=[];
-				for (var i = 0; i < json.length; i++) {
-					tr.push('<tr>');
-					tr.push('<td>' + json[i].id + '</td>');
-					tr.push('<td>' + json[i].customName + '</td>');
-					tr.push('<td>' + json[i].nameOfPrice + '</td>');
-					tr.push('<td>' + json[i].valueX + '</td>');
-					tr.push('<td>' + json[i].cost + '</td>');
-     				tr.push('<td><button class=\'edit\'>Edit</button>&nbsp;&nbsp;<button class=\'delete\' id=' + json[i].id + '>Delete</button></td>');
-					tr.push('</tr>');
-				}
-				$('table').append($(tr.join('')));
-			});
+				$.getJSON(url, function(json) {
+					var tr=[];
+					for (var i = 0; i < json.length; i++) {
+						tr.push('<tr>');
+						tr.push('<td>' + json[i].id + '</td>');
+						tr.push('<td>' + json[i].customName + '</td>');
+						tr.push('<td>' + json[i].nameOfPrice + '</td>');
+						tr.push('<td>' + json[i].valueX + '</td>');
+						tr.push('<td>' + json[i].cost + '</td>');
+	     				tr.push('<td><button class=\'edit\'>Edit</button>&nbsp;&nbsp;<button class=\'delete\' id=' + json[i].id + '>Delete</button></td>');
+						tr.push('</tr>');
+					}
+					
+					$('table').append($(tr.join('')));
+				});
+				});
+				
 			
-			});
-			
-			$(document).delegate('#addNew', 'click', function(event) {
+				$(document).delegate('#addNew', 'click', function(event) {
 				event.preventDefault();
 				
 				var email = $('#authorName').val();
@@ -173,18 +190,27 @@
 	<h2>Estimate for design work</h2>
 
 	<p>
-		<a class='btn' href="#add" rel="modal:open">Add new design
-			position</a>
+		<a class='btn' href="#add" rel="modal:open">Add new design position</a>
 	</p>
 	
-	<div>
-	<form class="" action="#" >
-  			<input type="number" placeholder="enter your estimateId" id="searchEstimateId1" name="searchEstimateId1">
-  			<button type="submit" id="searchEstimateId2" name="searchEstimateId2">Search estimates by id of estimate</button>
-	</form>
-	</div>
+	
+	<p>
+		<label for="selectEstimateId">Select your estimateId:</label> 
+			
+		<select name="selectEstimateId" id="selectEstimateId">
+				<option value="none">.....</option>
+		</select>
+		
+	&nbsp; 
 	&nbsp;
-	<table border="1" cellspacing="0" cellpadding="5" id="tableId">
+	&nbsp;
+	
+		<button type="button" id="searchDataByEstimateId" name="searchDataByEstimateId" >Search data by estimateId</button>
+	</p>
+	
+	
+	<table border="1" cellspacing="0" cellpadding="5">
+		<thead>
 		<tr>
 			<th>Id</th>
 			<th>Custom name of the project item</th>
@@ -194,6 +220,12 @@
 			<th>Cost of work, tenge</th>
 			<th>Actions</th>
 		</tr>
+		<thead>
+		
+		<tbody id="tableId">
+			<tr>
+			</tr>
+		</tbody>
 	
 	</table>
 	
@@ -508,8 +540,7 @@
 				    });
 			 	});
 			 	
-			 	
-  	
+	
 });
        
 </script>

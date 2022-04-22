@@ -74,7 +74,9 @@ public class ResultService {
 	public List<Result> getResultByEstimateId(Integer estimateId) {
 		return resultRepository.findResultByEstimateId(estimateId);
 	}
-	
 
+	public List<Result> getListOfEstimateId() {
+		return resultRepository.findAllEstimateId();
+	}
 
 }
