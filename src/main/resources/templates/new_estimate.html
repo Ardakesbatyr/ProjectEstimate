@@ -35,7 +35,10 @@
 					
 				var url = 'http://localhost:8080/result/estimateId/'+estimateId;
 				
+				var total = 0;
+				
 				$.getJSON(url, function(json) {
+					
 					var tr=[];
 					for (var i = 0; i < json.length; i++) {
 						tr.push('<tr>');
@@ -46,11 +49,15 @@
 						tr.push('<td>' + json[i].cost + '</td>');
 	     				tr.push('<td><button class=\'edit\'>Edit</button>&nbsp;&nbsp;<button class=\'delete\' id=' + json[i].id + '>Delete</button></td>');
 						tr.push('</tr>');
+						total += parseFloat(json[i].cost);  
 					}
 					
 					$('table').append($(tr.join('')));
+						
+					$('#total_sum_value').val(total);
+					
 				});
-				});
+			});
 				
 			
 				$(document).delegate('#addNew', 'click', function(event) {
@@ -183,25 +190,6 @@
     }
   	</style>
   	
-  	<script type="text/javascript">
-		  $(document).ready(function() {
-            $('table thead th').each(function(i) {
-                calculateColumn(i);
-            });
-        });
-
-        function calculateColumn(index) {
-            var total = 0;
-            $('table tfoot  tr').each(function() {
-                var value = parseInt($('td', this).eq(index).text());
-                if (!isNaN(value)) {
-                    total += value;
-                }
-            });
-            $('table tfoot td').eq(index).text('Total: ' + total);
-        }
-		    
-	</script>
 </head>
 
 <body>
@@ -242,20 +230,9 @@
 		<thead>
 		
 		<tbody id="tableId">
-			<tr class='txtCal'>
+			<tr>
 			</tr>
 		</tbody>
-		
-		 <tfoot>
-            <tr>
-                <td>Total:</td>
-                <td>Total:</td>
-                <td>Total:</td>
-                <td>Total:</td>
-                <td>Total:</td>
-                <td>Total:</td>
-            </tr>
-        </tfoot>
 	
 	</table>
 	
@@ -263,6 +240,7 @@
 		<label>Total cost:</label> 
 		<input type="number" id="total_sum_value" name="total_sum_value">
 	</p>
+
 	
 	<p>
 		<label>Author:</label> 
