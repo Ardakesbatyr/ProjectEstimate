@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -86,5 +88,8 @@ public class Result{
 	
 	@Column(name = "estimate_id", nullable=true)
 	private Integer estimateId;
+	
+	@Transient
+	private Double commonTotal;
 	
 }

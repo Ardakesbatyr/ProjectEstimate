@@ -15,11 +15,11 @@
 		$(document).ready(function() {
 		
 			$('#selectEstimateId').one("click", function(){
-			   			
+				
 			        var url = 'http://localhost:8080/listOfEstimateId';
-			
-			        $.getJSON(url, function (data) {
-			               $.each(data, function (index, value) {
+					
+					$.getJSON(url, function (data) {
+							$.each(data, function (index, value) {
 			               		$('#selectEstimateId').append('<option value="' + value.estimateId + '">' + value.estimateId + '</option>');
 			  	      });      
 				    });
@@ -182,7 +182,26 @@
     width: "600px";
     }
   	</style>
+  	
+  	<script type="text/javascript">
+		  $(document).ready(function() {
+            $('table thead th').each(function(i) {
+                calculateColumn(i);
+            });
+        });
 
+        function calculateColumn(index) {
+            var total = 0;
+            $('table tfoot  tr').each(function() {
+                var value = parseInt($('td', this).eq(index).text());
+                if (!isNaN(value)) {
+                    total += value;
+                }
+            });
+            $('table tfoot td').eq(index).text('Total: ' + total);
+        }
+		    
+	</script>
 </head>
 
 <body>
@@ -209,7 +228,7 @@
 	</p>
 	
 	
-	<table border="1" cellspacing="0" cellpadding="5">
+	<table border="1" cellspacing="0" cellpadding="5" id="myTable">
 		<thead>
 		<tr>
 			<th>Id</th>
@@ -217,15 +236,26 @@
 			<th>Name of works according to the collection of prices for
 				design work for construction</th>
 			<th>Custom value</th>
-			<th>Cost of work, tenge</th>
+			<th>Cost</th>
 			<th>Actions</th>
 		</tr>
 		<thead>
 		
 		<tbody id="tableId">
-			<tr>
+			<tr class='txtCal'>
 			</tr>
 		</tbody>
+		
+		 <tfoot>
+            <tr>
+                <td>Total:</td>
+                <td>Total:</td>
+                <td>Total:</td>
+                <td>Total:</td>
+                <td>Total:</td>
+                <td>Total:</td>
+            </tr>
+        </tfoot>
 	
 	</table>
 	
