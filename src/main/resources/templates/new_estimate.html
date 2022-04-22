@@ -13,8 +13,13 @@
 
 <script type="text/javascript">
 		$(document).ready(function() {
-		
-			$.getJSON('http://localhost:8080/resultList', function(json) {
+			
+			$('#searchEstimateId2').click(function () {
+				var estimateId = $("#searchEstimateId1").val();
+				$("#tableId").find("td").html('');
+				var url = 'http://localhost:8080/result/estimateId/'+estimateId;
+				
+			$.getJSON(url, function(json) {
 				var tr=[];
 				for (var i = 0; i < json.length; i++) {
 					tr.push('<tr>');
@@ -27,6 +32,8 @@
 					tr.push('</tr>');
 				}
 				$('table').append($(tr.join('')));
+			});
+			
 			});
 			
 			$(document).delegate('#addNew', 'click', function(event) {
@@ -145,6 +152,9 @@
 
 		});
 		
+		
+		
+		
 	</script>
 	
 	<style>
@@ -166,8 +176,15 @@
 		<a class='btn' href="#add" rel="modal:open">Add new design
 			position</a>
 	</p>
-
-	<table border="1" cellspacing="0" cellpadding="5">
+	
+	<div>
+	<form class="" action="#" >
+  			<input type="number" placeholder="enter your estimateId" id="searchEstimateId1" name="searchEstimateId1">
+  			<button type="submit" id="searchEstimateId2" name="searchEstimateId2">Search estimates by id of estimate</button>
+	</form>
+	</div>
+	&nbsp;
+	<table border="1" cellspacing="0" cellpadding="5" id="tableId">
 		<tr>
 			<th>Id</th>
 			<th>Custom name of the project item</th>
@@ -177,11 +194,12 @@
 			<th>Cost of work, tenge</th>
 			<th>Actions</th>
 		</tr>
+	
 	</table>
 	
 	<p>
 		<label>Total cost:</label> 
-		<input type="number" id="total" name="total">
+		<input type="number" id="total_sum_value" name="total_sum_value">
 	</p>
 	
 	<p>
@@ -195,7 +213,6 @@
 	</p>
 	
 	
-
 	<form id="add" action="#" class="add_form modal" style="display: none;">
 		<div id='msg' />
 		<h3>Add new design position</h3>
@@ -490,7 +507,6 @@
 					            
 				    });
 			 	});
-			 	
 			 	
 			 	
   	
