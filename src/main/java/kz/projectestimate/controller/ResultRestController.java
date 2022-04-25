@@ -57,4 +57,10 @@ public class ResultRestController {
 		return new ResponseEntity<List<Result>>(resultService.getListOfEstimateId(), HttpStatus.OK);
 	}
 	
+	@PostMapping("/result/edit")
+	public ResponseEntity<Void> editResult(@RequestBody Result result) {
+		resultService.editResult(result);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+	
 }

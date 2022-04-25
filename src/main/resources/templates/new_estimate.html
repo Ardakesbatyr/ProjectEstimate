@@ -58,6 +58,7 @@
 					$('table').append($(tr.join('')));
 						
 					$('#total_sum_value').val(total);
+					$('#author').val(email);
 					
 				});
 			});
@@ -110,11 +111,11 @@
 					cache: false,
 					success: function(result) {
 						$("#searchDataByEstimateId").click();
-						$("#msg").html( "<span style='color: green'>Company added successfully</span>");
-						window.setTimeout(function(){location.reload(none)},1000)
+						$("#close").click();
+						alert("new row added successfully")
 						},
 					error: function(err) {
-						$("#msg").html( "<span style='color: red'>Name is required</span>" );
+						alert("some field is not selected/input")
 					}
 				});
 			});
@@ -149,10 +150,12 @@
 				var parent = $(this).parent().parent();
 				
 				var id = parent.children("td:nth-child(1)");
-				var name = parent.children("td:nth-child(2)");
+				var customName = parent.children("td:nth-child(2)");
+				var valueX = parent.children("td:nth-child(4)");
 				var buttons = parent.children("td:nth-child(6)");
 				
-				name.html("<input type='text' id='txtName' value='" + name.html() + "'/>");
+				customName.html("<input type='text' id='txtName' value='" + customName.html() + "'/>");
+				valueX.html("<input type='number' id='txtName' value='" + valueX.html() + "'/>");
 				buttons.html("<button id='save'>Save</button>&nbsp;&nbsp;<button class='delete' id='" + id.html() + "'>Delete</button>");
 			});
 			
@@ -160,20 +163,26 @@
 				var parent = $(this).parent().parent();
 				
 				var id = parent.children("td:nth-child(1)");
-				var name = parent.children("td:nth-child(2)");
+				var customName = parent.children("td:nth-child(2)");
+				var valueX = parent.children("td:nth-child(4)");
 				var buttons = parent.children("td:nth-child(6)");
 				
 				$.ajax({
 					type: "POST",
 					contentType: "application/json; charset=utf-8",
-					url: "http://localhost:8080/category/save",
-					data: JSON.stringify({'id' : id.html(), 'name' : name.children("input[type=text]").val()}),
+					url: "http://localhost:8080/result/edit",
+					data: JSON.stringify({'id' : id.html(), 'customName' : customName.children("input[type=text]").val(),'valueX' : valueX.children("input[type=number]").val()}),
 					cache: false,
 					success: function() {
-						name.html(name.children("input[type=text]").val());
+						alert("success");
+						
+						customName.html(customName.children("input[type=text]").val());
+						valueX.html(valueX.children("input[type=number]").val());
 						buttons.html("<button class='edit' id='" + id.html() + "'>Edit</button>&nbsp;&nbsp;<button class='delete' id='" + id.html() + "'>Delete</button>");
+						$("#searchDataByEstimateId").click();
 					},
 					error: function() {
+						alert("error");
 						$('#err').html('<span style=\'color:red; font-weight: bold; font-size: 30px;\'>Error updating record').fadeIn().fadeOut(4000, function() {
 							$(this).remove();
 						});
@@ -202,11 +211,8 @@
 <body>
 
 	<h2>Estimate for design work</h2>
-
-	<p>
-		<a class='btn' href="#add" rel="modal:open">Add new design position</a>
-	</p>
 	
+	<p><a href="#ex1" rel="modal:open">Add new design position</a></p>
 	
 	<p>
 		<label for="selectEstimateId">Select your estimateId:</label> 
@@ -248,22 +254,12 @@
 		<input type="number" id="total_sum_value" name="total_sum_value">
 	</p>
 
+
 	
-	<p>
-		<label>Author:</label> 
-		<input type="text" id="author" name="author">
-	</p>
-	
-	<p>
-		<label>Date&Time:</label> 
-		<input type="text" id="date" name="date">
-	</p>
-	
-	
-	<form id="add" action="#" class="add_form modal" style="display: none;">
-		<div id='msg' />
-		<h3>Add new design position</h3>
-		
+	<div id="ex1" class="modal">
+		 
+		<h3>Add new design position</h3> 
+			
 		<p class="clip">
 			<label for="authorName">e-mail</label> 
 			<input type="email" id="authorName" name="authorName" placeholder="write email like name@gmail.com" size="25px" required="required"> </input>
@@ -377,7 +373,9 @@
 		<p class="clip">
 			<input type="submit" id="submit" value="Submit">
 		</p>
-	</form>
+		
+		<a href="#" rel="modal:close" id="close" hidden>Close</a>
+	</div>
 
 </body>
 
