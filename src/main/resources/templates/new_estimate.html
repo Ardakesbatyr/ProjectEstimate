@@ -11,6 +11,9 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 <link rel="stylesheet" href="/static/css/style2.css">
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
 <script type="text/javascript">
 		$(document).ready(function() {
 		
@@ -60,7 +63,7 @@
 			});
 				
 			
-				$(document).delegate('#addNew', 'click', function(event) {
+				$('#submit').click(function (){
 				event.preventDefault();
 				
 				var email = $('#authorName').val();
@@ -106,9 +109,10 @@
 					data: JSON.stringify({'email': email, 'estimateId': estimateId, 'customName': customName, 'valueX':valueX, 'valueXmax':valueXmax, 'valueXmin':valueXmin, 'valueA':valueA,'valueB':valueB,'valueP2':valueP2, 'valueP3':valueP3,'valueP4':valueP4,'valueK':valueK, 'section':section, 'subsection':subsection, 'chapter':chapter, 'tableName':tableName, 'position': position, 'currentTime' : currentTime}),
 					cache: false,
 					success: function(result) {
-						$("#msg").html( "<span style='color: green'>Company added successfully</span>" );
-						window.setTimeout(function(){location.reload()},1000)
-					},
+						$("#searchDataByEstimateId").click();
+						$("#msg").html( "<span style='color: green'>Company added successfully</span>");
+						window.setTimeout(function(){location.reload(none)},1000)
+						},
 					error: function(err) {
 						$("#msg").html( "<span style='color: red'>Name is required</span>" );
 					}
@@ -116,18 +120,21 @@
 			});
 			
 			$(document).delegate('.delete', 'click', function() { 
-				if (confirm('Do you really want to delete record?')) {
-					var id = $(this).attr('id');
+				var id = $(this).attr('id');
+				if (confirm('Do you really want to delete record id='+id+'?')) {
+					
 					var parent = $(this).parent().parent();
+					
 					$.ajax({
 						type: "DELETE",
-						url: "http://localhost:8080/category/delete/" + id,
+						url: "http://localhost:8080/result/delete/" + id,
 						cache: false,
 						success: function() {
 							parent.fadeOut('slow', function() {
 								$(this).remove();
 							});
-							location.reload(true)
+							
+							$("#searchDataByEstimateId").click();
 						},
 						error: function() {
 							$('#err').html('<span style=\'color:red; font-weight: bold; font-size: 30px;\'>Error deleting record').fadeIn().fadeOut(4000, function() {
@@ -368,7 +375,7 @@
 		</p>
 
 		<p class="clip">
-			<input type="submit" id="addNew" value="Submit">
+			<input type="submit" id="submit" value="Submit">
 		</p>
 	</form>
 
