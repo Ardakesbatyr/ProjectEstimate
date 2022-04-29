@@ -8,7 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,26 +32,26 @@ public class Result{
 	@Column(name = "currenttime", length = 128, nullable=true)
 	private String currentTime;
 	
-	@Column(name = "custom_name", length = 128, nullable=true)
+	@Column(name = "custom_name", length = 255, nullable=true)
 	private String customName;
 	
-	@Column(name = "name_of_price", length = 128, nullable=true)
+	@Column(name = "name_of_price", length = 500, nullable=true)
 	private String nameOfPrice;
 	
 	@Column(name = "value_x", nullable=true)
-	private Integer valueX;
+	private Double valueX;
 	
 	@Column(name = "value_xmax", nullable=true)
-	private Integer valueXmax;
+	private Double valueXmax;
 	
 	@Column(name = "value_xmin", nullable=true)
-	private Integer valueXmin;
+	private Double valueXmin;
 	
 	@Column(name = "value_a", nullable=true)
-	private Integer valueA;
+	private Double valueA;
 	
 	@Column(name = "value_b", nullable=true)
-	private Integer valueB;
+	private Double valueB;
 	
 	@Column(name = "cost", nullable=true)
 	private Double cost;
@@ -68,19 +68,19 @@ public class Result{
 	@Column(name = "value_k", nullable=true)
 	private Double valueK;
 	
-	@Column(name = "section", length = 128, nullable=true)
+	@Column(name = "section", length = 255, nullable=true)
 	private String section;
 	
-	@Column(name = "subsection", length = 128, nullable=true)
+	@Column(name = "subsection", length = 255, nullable=true)
 	private String subsection;
 	
-	@Column(name = "chapter", length = 128, nullable=true)
+	@Column(name = "chapter", length = 255, nullable=true)
 	private String chapter;
 	
-	@Column(name = "table_name", length = 128, nullable=true)
+	@Column(name = "table_name", length = 255, nullable=true)
 	private String tableName;
 	
-	@Column(name = "position", length = 128, nullable=true)
+	@Column(name = "position", length = 1000, nullable=true)
 	private String position;
 	
 	@Column(name = "total", nullable=true)
@@ -89,7 +89,7 @@ public class Result{
 	@Column(name = "estimate_id", nullable=true)
 	private Integer estimateId;
 	
-	@Transient
-	private Double commonTotal;
+	@Column(name = "value_r", nullable=true)
+	private Double valueR;
 	
 }

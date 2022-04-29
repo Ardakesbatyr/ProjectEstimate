@@ -25,23 +25,23 @@ public class Price{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(name = "position")
+	@Column(name = "position", length = 1000, nullable=true)
 	private String position;
 	
-	@Column(name = "unit")
+	@Column(name = "unit", length = 255, nullable=true)
 	private String unit;
 	
 	@Column(name = "value_xmin")
-	private Integer valueXmin;
+	private Double valueXmin;
 	
 	@Column(name = "value_xmax")
-	private Integer valueXmax;
+	private Double valueXmax;
 		
 	@Column(name = "value_a")
-	private Integer valueA;
+	private Double valueA;
 	
 	@Column(name = "value_b")
-	private Integer valueB;
+	private Double valueB;
 	
 	@Column(name = "value_k1")
 	private Double valueK1;
@@ -49,16 +49,16 @@ public class Price{
 	@Column(name = "value_k2")
 	private Double valueK2;
 	
-	@Column(name = "section")
+	@Column(name = "section", length = 255, nullable=true)
 	private String section;
 	
-	@Column(name = "subsection")
+	@Column(name = "subsection", length = 255, nullable=true)
 	private String subsection;
 	
-	@Column(name = "chapter")
+	@Column(name = "chapter", length = 255, nullable=true)
 	private String chapter;
 	
-	@Column(name = "table_name")
+	@Column(name = "table_name", length = 255, nullable=true)
 	private String tableName;
 
 	public Price(String section) {

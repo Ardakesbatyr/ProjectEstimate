@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import kz.projectestimate.entity.Result;
 import kz.projectestimate.repository.ResultRepository;
 import java.time.format.DateTimeFormatter;
-import java.text.DecimalFormat;
 import java.time.LocalDateTime; 
 
 @Service
@@ -32,19 +31,19 @@ public class ResultService {
 		newResult.setCustomName(result.getCustomName());
 		newResult.setNameOfPrice(result.getTableName()+" , "+result.getPosition());
 		
-		Integer valueX = result.getValueX();
+		Double valueX = result.getValueX();
 		newResult.setValueX(valueX);
 		
-		Integer valueXmax = result.getValueXmax();
+		Double valueXmax = result.getValueXmax();
 		newResult.setValueXmax(valueXmax);
 		
-		Integer valueXmin = result.getValueXmin();
+		Double valueXmin = result.getValueXmin();
 		newResult.setValueXmin(valueXmin);
 		
-		Integer valueA = result.getValueA();
+		Double valueA = result.getValueA();
 		newResult.setValueA(valueA);
 		
-		Integer valueB = result.getValueB();
+		Double valueB = result.getValueB();
 		newResult.setValueB(valueB);
 		
 		Double valueK = result.getValueK();
@@ -123,19 +122,19 @@ public class ResultService {
 		newResult.setCustomName(result.getCustomName());
 		newResult.setNameOfPrice(oldResult.getNameOfPrice());
 	
-		Integer valueX = result.getValueX();
+		Double valueX = result.getValueX();
 		newResult.setValueX(valueX);
 		
-		Integer valueXmax = oldResult.getValueXmax();
+		Double valueXmax = oldResult.getValueXmax();
 		newResult.setValueXmax(valueXmax);
 		
-		Integer valueXmin = oldResult.getValueXmin();
+		Double valueXmin = oldResult.getValueXmin();
 		newResult.setValueXmin(valueXmin);
 		
-		Integer valueA = oldResult.getValueA();
+		Double valueA = oldResult.getValueA();
 		newResult.setValueA(valueA);
 		
-		Integer valueB = oldResult.getValueB();
+		Double valueB = oldResult.getValueB();
 		newResult.setValueB(valueB);
 		
 		Double valueK = oldResult.getValueK();

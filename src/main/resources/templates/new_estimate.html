@@ -4,15 +4,17 @@
 <title>Estimate</title>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
 <!-- jQuery Modal -->
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+<script	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 <link rel="stylesheet" href="/static/css/style2.css">
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
+<script src="js/tableHTMLExport.js"></script>
+
 
 <script type="text/javascript">
 		$(document).ready(function() {
@@ -103,11 +105,13 @@
 				
 				var currentTime= $('#currenttime').val();
 				
+				var valueR= $('#valueR').val();
+				
 				$.ajax({
 					type: "POST",
 					contentType: "application/json; charset=utf-8",
 					url: "http://localhost:8080/result/save",
-					data: JSON.stringify({'email': email, 'estimateId': estimateId, 'customName': customName, 'valueX':valueX, 'valueXmax':valueXmax, 'valueXmin':valueXmin, 'valueA':valueA,'valueB':valueB,'valueP2':valueP2, 'valueP3':valueP3,'valueP4':valueP4,'valueK':valueK, 'section':section, 'subsection':subsection, 'chapter':chapter, 'tableName':tableName, 'position': position, 'currentTime' : currentTime}),
+					data: JSON.stringify({'email': email, 'estimateId': estimateId, 'customName': customName, 'valueX':valueX, 'valueXmax':valueXmax, 'valueXmin':valueXmin, 'valueA':valueA,'valueB':valueB,'valueP2':valueP2, 'valueP3':valueP3,'valueP4':valueP4,'valueK':valueK, 'section':section, 'subsection':subsection, 'chapter':chapter, 'tableName':tableName, 'position': position, 'currentTime' : currentTime, 'valueR' : valueR}),
 					cache: false,
 					success: function(result) {
 						$("#searchDataByEstimateId").click();
@@ -189,13 +193,21 @@
 					}
 				});
 			});
-
+			
+			
+			$('#showComments').one("click", function(){
+				
+		        var url = 'http://localhost:8080/listOfEstimateId';
+				
+				$.getJSON(url, function (data) {
+						$.each(data, function (index, value) {
+		               		$('#selectEstimateId').append('<option value="' + value.estimateId + '">' + value.estimateId + '</option>');
+		  	      });      
+			    });
+		 	});
 		});
 		
-		
-		
-		
-	</script>
+</script>
 	
 	<style>
    p.clip {
@@ -203,6 +215,12 @@
     overflow: auto; /* Обрезаем все, что не помещается в область */
     text-overflow: inherit; /* Добавляем многоточие */
     width: "600px";
+    }
+    
+     p.clip2 {
+    white-space: inherit; /* Запрещаем перенос строк */
+    overflow: scroll; /* Обрезаем все, что не помещается в область */
+    text-overflow: ellipsis; /* Добавляем многоточие */
     }
   	</style>
   	
@@ -229,7 +247,7 @@
 	</p>
 	
 	
-	<table border="1" cellspacing="0" cellpadding="5" id="myTable">
+	<table border="1" cellspacing="0" cellpadding="5" id="myTable" class="display nowrap">
 		<thead>
 		<tr>
 			<th>Id</th>
@@ -237,7 +255,7 @@
 			<th>Name of works according to the collection of prices for
 				design work for construction</th>
 			<th>Custom value</th>
-			<th>Cost</th>
+			<th>Cost, tenge</th>
 			<th>Actions</th>
 		</tr>
 		<thead>
@@ -250,10 +268,13 @@
 	</table>
 	
 	<p>
-		<label>Total cost:</label> 
+		<label>Total cost, tenge:</label> 
 		<input type="number" id="total_sum_value" name="total_sum_value">
 	</p>
-
+	
+	<p>
+		<button onclick="window.print()">Print this page</button>
+	</p>
 
 	
 	<div id="ex1" class="modal">
@@ -360,9 +381,15 @@
 		</p>
 
 		<p class="clip">
-			<label>Input valueP4***</label> <select name="valueP4" id="valueP4">
+			<label>Input valueP4***</label> 
+			<select name="valueP4" id="valueP4">
 				<option value="1" selected="selected">Не применять, нет указанных факторов</option>
 			</select>
+		</p>
+		
+		<p>
+			<label for="valueR">Input valueR:</label> 
+			<input	type="number" id="valueR" name="valueR" placeholder="read comments"> </input>
 		</p>
 		
 		<p class="clip">
@@ -375,7 +402,34 @@
 		</p>
 		
 		<a href="#" rel="modal:close" id="close" hidden>Close</a>
+		
+		<br>
+		<button type="button" id="showSubsectionComments" name="showSubsectionComments" >Show/Hide comments for subsection</button>
+		<div id="hide1" style="display:none">
+		<p class="clip2">
+			<textarea id="subsectionComments" name="subsectionComments" rows="25" cols="50" readonly></textarea>
+		</p>
+		</div>
+		
+		<br>
+		<button type="button" id="showChapterComments" name="showChapterComments" >Show/Hide comments for chapter</button>
+		<div id="hide2" style="display:none">
+		<p class="clip2">
+			<textarea id="chapterComments" name="chapterComments" rows="25" cols="50" readonly></textarea>
+		</p>
+		</div>
+		
+		<br>
+		<button type="button" id="showTableComments" name="showTableComments" >Show/Hide comments for table</button>
+		<div id="hide3" style="display:none">
+		<p class="clip2">
+			<textarea id="tableComments" name="tableComments" rows="25" cols="50" readonly></textarea>
+		</p>
+		</div>
+		
 	</div>
+
+
 
 </body>
 
@@ -383,11 +437,9 @@
     $(document).ready(function () {
     		
      
-        $('#section').click(function () {
-            
-            var url = "http://localhost:8080/sectionList";
-
-            $.getJSON(url, function (data) {
+        $('#section').one("click", function(){
+           var url = "http://localhost:8080/sectionList";
+           $.getJSON(url, function (data) {
            
                 $.each(data, function (index, value) {
                     // APPEND OR INSERT DATA TO SELECT ELEMENT.
@@ -397,8 +449,8 @@
                 });
             });
             
-            
-            $('#subsection').click(function () {
+               
+            $('#subsection').one("click", function(){
             var section = $("#section").val();
             var url = 'http://localhost:8080/subsectionList/'+section;
 
@@ -412,8 +464,8 @@
                 });
             });
             
-            
-            $('#chapter').click(function () {
+           
+            $('#chapter').one("click", function(){
             var subsection = $("#subsection").val();
             var url = 'http://localhost:8080/chapterList/'+subsection;
 
@@ -427,23 +479,32 @@
                 });
             });
             
-            
-            $('#table_name').click(function () {
+ 
+           $('#table_name').one("click", function(){
             var chapter = $("#chapter").val();
             var url = 'http://localhost:8080/tableList/'+chapter;
 
             $.getJSON(url, function (data) {
            
                 $.each(data, function (index, value) {
-                  
+                	
                     $('#table_name').append('<option value="' + value.tableName + '">' + value.tableName + '</option>');
             		});
                     
                 });
             });
             
+            $('#table_name').change(function(){
+             
+            	$('#position')
+                .empty()
+                .append('<option value=""> -- Select position-- </option>');
+             	
+               });
             
-            $('#position').click(function () {
+            
+           $('#position').click(function(){
+        	   
             var table_name = $("#table_name").val();
              
             var url = 'http://localhost:8080/positionList/'+table_name;
@@ -451,18 +512,27 @@
             $.getJSON(url, function (data) {
            
                 $.each(data, function (index, value) {
-                  
-                    $('#position').append('<option value="' + value.position + '">' + value.position + '</option>');
+                     $('#position').append('<option value="' + value.position + '">' + value.position + '</option>');
               		});
-            		
-            		
-            		});
-                      
-  				});
+              	});
+     		});
   				
+           $('#position').change(function(){
+        	   	$('#valueX').empty();  
+                $('#valueXmax').empty();
+		        $('#valueXmin').empty(); 
+		        $('#unit').empty();  
+		        $('#valueA').empty();  
+		        $('#valueB').empty();  
+		        $('#valueK1').empty();  
+		        $('#valueK2').empty();
+		        $('#currenttime').empty();
+		        $('#customName').click();
+              });
+           
   				
-  				
-  				 $('#customName').click(function () {
+  			$('#customName').click(function(){
+  					var valueK = $("#valueK").val();
 			            var position = $("#position").val();
 			            var url = 'http://localhost:8080/positionData/'+position;
 			            			            
@@ -486,26 +556,22 @@
 			   			        $('#valueB').val(data.valueB);	
 			   			        $('#valueK1').val(data.valueK1);
 			   			        $('#valueK2').val(data.valueK2);
+			   			        
+				   			     if (valueK==K1) {
+						               $('#valueK').append('<option value="' + value.valueK1 + '">' + value.valueK1 + '</option>');
+						             }
+			                   	else {
+			                   	 		$('#valueK').append('<option value="' + value.valueK2 + '">' + value.valueK2 + '</option>');		
+			                   		}
 			   			       
 			               	});
 			       		});
 			       		
 			       		
-			    $('#valueK').click(function () {
-			    	var valueK = $("#valueK").val();
-			    	var url = 'http://localhost:8080/positionData/'+position;
-				        $.getJSON(url, function (data) {
-			    	if (valueK==K1) {
-			               $('#valueK').append('<option value="' + value.valueK1 + '">' + value.valueK1 + '</option>');
-			             }
-                   	else {
-                   	 		$('#valueK').append('<option value="' + value.valueK2 + '">' + value.valueK2 + '</option>');		
-                   	}
-                   	});
-			    });
+			  
 			       		
     			       		
-			    $('#valueP2').click(function () {
+			$('#valueP2').click(function () {
 			    var valueK = $("#valueK").val();
 			    var valueK1 = $("#valueK1").val();
 			    var valueK2 = $("#valueK2").val();
@@ -539,19 +605,40 @@
 			 	});
 			 	
 			 	$('#valueP4').click(function () {
-		   
 			        var url = 'http://localhost:8080/application4List';
-			
 			        $.getJSON(url, function (data) {
-			          
-			               $.each(data, function (index, value) {
-			                 
+				               $.each(data, function (index, value) {
 			                   		$('#valueP4').append('<option value="' + value.ratio + '">' + value.name + '</option>');
-			                   	
 				            });
-					            
 				    });
 			 	});
+			 	
+			 	$('#showSubsectionComments').click(function () {
+			 		var subsection = $("#subsection").val();
+		            var url = 'http://localhost:8080/comments/'+subsection;
+			        $.getJSON(url, function (data) {
+		           	 	$('#subsectionComments').val(data.comments);
+	            	 	$("#hide1").toggle();
+		            });
+		  		});
+			 	
+			 	$('#showChapterComments').click(function () {
+			 		var chapter = $("#chapter").val();
+			        var url = 'http://localhost:8080/comments/'+chapter;
+		            $.getJSON(url, function (data) {
+		            	 	$('#chapterComments').val(data.comments);
+		            	 	$("#hide2").toggle();
+		            });
+		  		});
+			 	
+			 	$('#showTableComments').click(function () {
+		            var table = $("#table_name").val();
+		            var url = 'http://localhost:8080/comments/'+table;
+		            $.getJSON(url, function (data) {
+		            	 	$('#tableComments').val(data.comments);
+		            	 	$("#hide3").toggle();
+		            });
+		  		});
 			 	
 	
 });
