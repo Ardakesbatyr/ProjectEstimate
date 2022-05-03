@@ -54,12 +54,12 @@
 						tr.push('<td>' + json[i].cost + '</td>');
 	     				tr.push('<td><button class=\'edit\'>Edit</button>&nbsp;&nbsp;<button class=\'delete\' id=' + json[i].id + '>Delete</button></td>');
 						tr.push('</tr>');
-						total += parseFloat(json[i].cost);  
+						total += parseFloat(json[i].cost)*100;  
 					}
 					
 					$('table').append($(tr.join('')));
 						
-					$('#total_sum_value').val(parseFloat(total));
+					$('#total_sum_value').val(parseFloat(total/100));
 					$('#author').val(email);
 					
 				});

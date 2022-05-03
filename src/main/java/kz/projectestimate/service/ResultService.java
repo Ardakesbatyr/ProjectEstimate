@@ -161,7 +161,7 @@ public class ResultService {
 			int temp = (int)(longDouble*100);
 			double shortDouble = ((double)temp)/100;
 			newResult.setCost(shortDouble);
-		} else if (valueXmin == valueX || valueX == valueXmax) {
+		} else if (valueX == valueXmin || valueX == valueXmax) {
 			Double longDouble = (valueA+valueB*valueX)*valueP2*valueP3*valueP4*valueK;
 			int temp = (int)(longDouble*100);
 			double shortDouble = ((double)temp)/100;
