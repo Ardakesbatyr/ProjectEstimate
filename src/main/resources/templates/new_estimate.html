@@ -59,7 +59,7 @@
 					
 					$('table').append($(tr.join('')));
 						
-					$('#total_sum_value').val(total);
+					$('#total_sum_value').val(parseFloat(total));
 					$('#author').val(email);
 					
 				});
@@ -338,13 +338,13 @@
 		</p>
 
 		<p class="clip">
-			<label for="valueXmax">Default value of valueXmax:</label> <input
-				type="number" id="valueXmax" name="valueXmax" size="10px" readonly> </input>
-		</p>
-
-		<p class="clip">
 			<label for="valueXmin">Default value of valueXmin:</label> <input
 				type="number" id="valueXmin" name="valueXmin" size="10px" readonly> </input>
+		</p>
+		
+		<p class="clip">
+			<label for="valueXmax">Default value of valueXmax:</label> <input
+				type="number" id="valueXmax" name="valueXmax" size="10px" readonly> </input>
 		</p>
 		
 		<p class="clip">
@@ -499,42 +499,39 @@
             	$('#position')
                 .empty()
                 .append('<option value=""> -- Select position-- </option>');
-             	
-               });
-            
-            
-           $('#position').click(function(){
-        	   
-            var table_name = $("#table_name").val();
-             
-            var url = 'http://localhost:8080/positionList/'+table_name;
+            	
+            	 $('#position').one("click", function(){
+              	   
+                     var table_name = $("#table_name").val();
+                      
+                     var url = 'http://localhost:8080/positionList/'+table_name;
 
-            $.getJSON(url, function (data) {
-           
-                $.each(data, function (index, value) {
-                     $('#position').append('<option value="' + value.position + '">' + value.position + '</option>');
+                     $.getJSON(url, function (data) {
+                    
+                         $.each(data, function (index, value) {
+                              $('#position').append('<option value="' + value.id + '">' + value.position + '</option>');
+                       		});
+                       	});
               		});
-              	});
-     		});
-  				
-           $('#position').change(function(){
+              });
+            
+            
+            $('#position').change(function(){
         	   	$('#valueX').empty();  
                 $('#valueXmax').empty();
 		        $('#valueXmin').empty(); 
 		        $('#unit').empty();  
 		        $('#valueA').empty();  
 		        $('#valueB').empty();  
-		        $('#valueK1').empty();  
-		        $('#valueK2').empty();
 		        $('#currenttime').empty();
-		        $('#customName').click();
-              });
+	          });
            
   				
   			$('#customName').click(function(){
-  					var valueK = $("#valueK").val();
-			            var position = $("#position").val();
-			            var url = 'http://localhost:8080/positionData/'+position;
+  				
+						var valueK = $("#valueK").val();
+			            var id = $("#position").val();
+			            var url = 'http://localhost:8080/price/'+id;
 			            			            
 			            var today = new Date();
 
@@ -547,30 +544,50 @@
 						var authorName = $("#authorName").val();
 						$('#currenttime').val(dateTime);
 			   			$('#authorName').val(authorName);
-			   				
+			   			
 			 	        $.getJSON(url, function (data) {
-			   			        $('#valueXmax').val(data.valueXmax);
-			   			        $('#valueXmin').val(data.valueXmin); 
+			   			        $('#valueXmax').val(parseFloat(data.valueXmax));
+			   			        $('#valueXmin').val(parseFloat(data.valueXmin)); 
 			   			        $('#unit').val(data.unit);  
-			   			        $('#valueA').val(data.valueA);
-			   			        $('#valueB').val(data.valueB);	
-			   			        $('#valueK1').val(data.valueK1);
-			   			        $('#valueK2').val(data.valueK2);
+			   			        $('#valueA').val(parseFloat(data.valueA));
+			   			        $('#valueB').val(parseFloat(data.valueB));	
+			   			        $('#valueK1').val(parseFloat(data.valueK1));
+			   			        $('#valueK2').val(parseFloat(data.valueK2));
 			   			        
 				   			     if (valueK==K1) {
-						               $('#valueK').append('<option value="' + value.valueK1 + '">' + value.valueK1 + '</option>');
+						               $('#valueK').append('<option value="' + parseFloat(data.valueK1) + '">' + parseFloat(data.valueK1) + '</option>');
 						             }
 			                   	else {
-			                   	 		$('#valueK').append('<option value="' + value.valueK2 + '">' + value.valueK2 + '</option>');		
+			                   	 		$('#valueK').append('<option value="' + parseFloat(data.valueK2) + '">' + parseFloat(data.valueK2) + '</option>');		
 			                   		}
 			   			       
 			               	});
 			       		});
 			       		
 			       		
-			  
+  		  $('#valueK').one("click", function(){
+  			  
+  			var valueK = $("#valueK").val();
+            var id = $("#position").val();
+            var url = 'http://localhost:8080/price/'+id;
+    
+            $.getJSON(url, function (data) {
+   			        $('#valueK1').val(parseFloat(data.valueK1));
+   			        $('#valueK2').val(parseFloat(data.valueK2));
+   			        
+	   			    if (valueK==K1) {
+			               $('#valueK').append('<option value="' + parseFloat(data.valueK1) + '">' + parseFloat(data.valueK1) + '</option>');
+			             }
+                   	else {
+                   	 		$('#valueK').append('<option value="' + parseFloat(data.valueK2) + '">' + parseFloat(data.valueK2) + '</option>');		
+                   		}
+   			       
+               	});
 			       		
-    			       		
+  			});	 
+  			  
+  			  
+  			  
 			$('#valueP2').click(function () {
 			    var valueK = $("#valueK").val();
 			    var valueK1 = $("#valueK1").val();

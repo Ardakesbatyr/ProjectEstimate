@@ -77,6 +77,10 @@ public class PriceRestController {
 	
 	@GetMapping("/positionData/{position}")
 	public ResponseEntity<Price> getPriceByPosition(@PathVariable("position") String position) {
+		Price price = priceService.getPriceByPosition("36.Узел учета нефти производительностью: от 0,5 до 5 тыс. м3/сут");
+		Price price2 = priceService.getPriceById(48);
+		System.out.println(price.getValueXmin());
+		System.out.println(price2.getValueXmin());
 		return new ResponseEntity<Price>(priceService.getPriceByPosition(position), HttpStatus.OK);
 	}
 	

@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import kz.projectestimate.entity.Price;
 import kz.projectestimate.entity.Result;
 import kz.projectestimate.repository.ResultRepository;
 import java.time.format.DateTimeFormatter;
@@ -15,6 +17,9 @@ public class ResultService {
 
 	@Autowired
 	private ResultRepository resultRepository;
+	
+	@Autowired
+	private PriceService priceService;
 	
 	public List<Result> getResultList() {
 		return resultRepository.findAll();
@@ -27,9 +32,11 @@ public class ResultService {
 	public void saveOrUpdateResult(Result result) {
 		
 		Result newResult=new Result();
-		
+		Integer id = Integer.parseInt(result.getPosition());
+		Price price = priceService.getPriceById(id);
+		String position = price.getPosition();
 		newResult.setCustomName(result.getCustomName());
-		newResult.setNameOfPrice(result.getTableName()+" , "+result.getPosition());
+		newResult.setNameOfPrice(result.getTableName()+" , "+ position);
 		
 		Double valueX = result.getValueX();
 		newResult.setValueX(valueX);
@@ -60,23 +67,23 @@ public class ResultService {
 		
 		if (valueXmin < valueX && valueX < valueXmax) {
 			Double longDouble = (valueA+valueB*valueX)*valueP2*valueP3*valueP4*valueK;
-			int temp = (int)(longDouble*100.0);
-			double shortDouble = ((double)temp)/100.0;
+			int temp = (int)(longDouble*100);
+			double shortDouble = ((double)temp)/100;
 			newResult.setCost(shortDouble);
 		} else if (valueXmin == valueX || valueX == valueXmax) {
 			Double longDouble = (valueA+valueB*valueX)*valueP2*valueP3*valueP4*valueK;
-			int temp = (int)(longDouble*100.0);
-			double shortDouble = ((double)temp)/100.0;
+			int temp = (int)(longDouble*100);
+			double shortDouble = ((double)temp)/100;
 			newResult.setCost(shortDouble);
 		} else if (valueX < valueXmin) {
 			Double longDouble = (valueA+valueB*(0.4*valueXmin+0.6*valueX))*valueP2*valueP3*valueP4*valueK;
-			int temp = (int)(longDouble*100.0);
-			double shortDouble = ((double)temp)/100.0;
+			int temp = (int)(longDouble*100);
+			double shortDouble = ((double)temp)/100;
 			newResult.setCost(shortDouble);
 		} else if (valueX > valueXmax) {
 			Double longDouble = (valueA+valueB*(0.4*valueXmax+0.6*valueX))*valueP2*valueP3*valueP4*valueK;
-			int temp = (int)(longDouble*100.0);
-			double shortDouble = ((double)temp)/100.0;
+			int temp = (int)(longDouble*100);
+			double shortDouble = ((double)temp)/100;
 			newResult.setCost(shortDouble);
 		}
 		
@@ -151,23 +158,23 @@ public class ResultService {
 		
 		if (valueXmin < valueX && valueX < valueXmax) {
 			Double longDouble = (valueA+valueB*valueX)*valueP2*valueP3*valueP4*valueK;
-			int temp = (int)(longDouble*100.0);
-			double shortDouble = ((double)temp)/100.0;
+			int temp = (int)(longDouble*100);
+			double shortDouble = ((double)temp)/100;
 			newResult.setCost(shortDouble);
 		} else if (valueXmin == valueX || valueX == valueXmax) {
 			Double longDouble = (valueA+valueB*valueX)*valueP2*valueP3*valueP4*valueK;
-			int temp = (int)(longDouble*100.0);
-			double shortDouble = ((double)temp)/100.0;
+			int temp = (int)(longDouble*100);
+			double shortDouble = ((double)temp)/100;
 			newResult.setCost(shortDouble);
 		} else if (valueX < valueXmin) {
 			Double longDouble = (valueA+valueB*(0.4*valueXmin+0.6*valueX))*valueP2*valueP3*valueP4*valueK;
-			int temp = (int)(longDouble*100.0);
-			double shortDouble = ((double)temp)/100.0;
+			int temp = (int)(longDouble*100);
+			double shortDouble = ((double)temp)/100;
 			newResult.setCost(shortDouble);
 		} else if (valueX > valueXmax) {
 			Double longDouble = (valueA+valueB*(0.4*valueXmax+0.6*valueX))*valueP2*valueP3*valueP4*valueK;
-			int temp = (int)(longDouble*100.0);
-			double shortDouble = ((double)temp)/100.0;
+			int temp = (int)(longDouble*100);
+			double shortDouble = ((double)temp)/100;
 			newResult.setCost(shortDouble);
 		}
 		
