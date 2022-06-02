@@ -1,0 +1,665 @@
+<!doctype html>
+<html>
+<head>
+<title>Project</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<!-- jQuery Modal -->
+<script	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+<link rel="stylesheet" href="/static/css/style2.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
+<script src="js/tableHTMLExport.js"></script>
+
+
+<script type="text/javascript">
+		$(document).ready(function() {
+		
+			$('#selectEstimateId').one("click", function(){
+				
+			        var url = 'http://localhost:8080/listOfEstimateId';
+					
+					$.getJSON(url, function (data) {
+							$.each(data, function (index, value) {
+			               		$('#selectEstimateId').append('<option value="' + value.estimateId + '">' + value.estimateId + '</option>');
+			  	      });      
+				    });
+			 	});
+			 	
+			 	
+		
+			$('#searchDataByEstimateId').click(function (){
+				
+				$("#tableId").find("tr").html('');
+				
+				var estimateId = $("#selectEstimateId").val();
+					
+				var url = 'http://localhost:8080/result/estimateId/'+estimateId;
+				
+				var total = 0;
+				
+				$.getJSON(url, function(json) {
+					
+					var tr=[];
+					for (var i = 0; i < json.length; i++) {
+						tr.push('<tr>');
+						tr.push('<td>' + json[i].id + '</td>');
+						tr.push('<td>' + json[i].customName + '</td>');
+						tr.push('<td>' + json[i].nameOfPrice + '</td>');
+						tr.push('<td>' + json[i].valueX + '</td>');
+						tr.push('<td>' + json[i].cost + '</td>');
+	     				tr.push('<td><button class=\'edit\'>Edit</button>&nbsp;&nbsp;<button class=\'delete\' id=' + json[i].id + '>Delete</button></td>');
+						tr.push('</tr>');
+						total += parseFloat(json[i].cost)*100;  
+					}
+					
+					$('table').append($(tr.join('')));
+						
+					$('#total_sum_value').val(parseFloat(total/100));
+					$('#author').val(email);
+					
+				});
+			});
+				
+			
+				$('#submit').click(function (){
+				
+				event.preventDefault();
+				
+				var email = $('#authorName').val();
+				
+				var estimateId = $('#estimateId').val();
+				
+				var customName = $('#customName').val();
+				
+				var valueX = $('#valueX').val();
+				
+				var valueXmax = $('#valueXmax').val();
+				
+				var valueXmin = $('#valueXmin').val();
+				
+				var valueA = $('#valueA').val();
+				
+				var valueB = $('#valueB').val();
+					
+				var valueP2= $('#valueP2').val();
+				
+				var valueP3= $('#valueP3').val();
+				
+				var valueP4= $('#valueP4').val();
+				
+				var valueK= $('#valueK').val();
+					
+				var section= $('#section').val();
+				
+				var subsection= $('#subsection').val();
+				
+				var chapter= $('#chapter').val();
+				
+				var tableName= $('#table_name').val();
+				
+				var position= $('#position').val();
+				
+				var currentTime= $('#currenttime').val();
+				
+				var valueR= $('#valueR').val();
+					
+				$.ajax({
+					type: "POST",
+					contentType: "application/json; charset=utf-8",
+					url: "http://localhost:8080/result/save",
+					data: JSON.stringify({'email': email, 'estimateId': estimateId, 'customName': customName, 'valueX':valueX, 'valueXmax':valueXmax, 'valueXmin':valueXmin, 'valueA':valueA,'valueB':valueB,'valueP2':valueP2, 'valueP3':valueP3,'valueP4':valueP4,'valueK':valueK, 'section':section, 'subsection':subsection, 'chapter':chapter, 'tableName':tableName, 'position': position, 'currentTime' : currentTime, 'valueR' : valueR}),
+					cache: false,
+					success: function(result) {
+						$("#searchDataByEstimateId").click();
+						$("#close").click();
+						alert("new row added successfully")
+						},
+					error: function(err) {
+						alert("some field is not selected/input")
+					}
+				});
+			});
+			
+			$(document).delegate('.delete', 'click', function() { 
+				var id = $(this).attr('id');
+				if (confirm('Do you really want to delete record id='+id+'?')) {
+					
+					var parent = $(this).parent().parent();
+					
+					$.ajax({
+						type: "DELETE",
+						url: "http://localhost:8080/result/delete/" + id,
+						cache: false,
+						success: function() {
+							parent.fadeOut('slow', function() {
+								$(this).remove();
+							});
+							
+							$("#searchDataByEstimateId").click();
+						},
+						error: function() {
+							$('#err').html('<span style=\'color:red; font-weight: bold; font-size: 30px;\'>Error deleting record').fadeIn().fadeOut(4000, function() {
+								$(this).remove();
+							});
+						}
+					});
+				}
+			});
+			
+			$(document).delegate('.edit', 'click', function() {
+				var parent = $(this).parent().parent();
+				
+				var id = parent.children("td:nth-child(1)");
+				var customName = parent.children("td:nth-child(2)");
+				var valueX = parent.children("td:nth-child(4)");
+				var buttons = parent.children("td:nth-child(6)");
+				
+				customName.html("<input type='text' id='txtName' value='" + customName.html() + "'/>");
+				valueX.html("<input type='number' id='txtName' value='" + valueX.html() + "'/>");
+				buttons.html("<button id='save'>Save</button>&nbsp;&nbsp;<button class='delete' id='" + id.html() + "'>Delete</button>");
+			});
+			
+			$(document).delegate('#save', 'click', function() {
+				var parent = $(this).parent().parent();
+				
+				var id = parent.children("td:nth-child(1)");
+				var customName = parent.children("td:nth-child(2)");
+				var valueX = parent.children("td:nth-child(4)");
+				var buttons = parent.children("td:nth-child(6)");
+				
+				$.ajax({
+					type: "POST",
+					contentType: "application/json; charset=utf-8",
+					url: "http://localhost:8080/result/edit",
+					data: JSON.stringify({'id' : id.html(), 'customName' : customName.children("input[type=text]").val(),'valueX' : valueX.children("input[type=number]").val()}),
+					cache: false,
+					success: function() {
+						alert("success");
+						
+						customName.html(customName.children("input[type=text]").val());
+						valueX.html(valueX.children("input[type=number]").val());
+						buttons.html("<button class='edit' id='" + id.html() + "'>Edit</button>&nbsp;&nbsp;<button class='delete' id='" + id.html() + "'>Delete</button>");
+						$("#searchDataByEstimateId").click();
+					},
+					error: function() {
+						alert("error");
+						$('#err').html('<span style=\'color:red; font-weight: bold; font-size: 30px;\'>Error updating record').fadeIn().fadeOut(4000, function() {
+							$(this).remove();
+						});
+					}
+				});
+			});
+			
+			
+			$('#showComments').one("click", function(){
+				
+		        var url = 'http://localhost:8080/listOfEstimateId';
+				
+				$.getJSON(url, function (data) {
+						$.each(data, function (index, value) {
+		               		$('#selectEstimateId').append('<option value="' + value.estimateId + '">' + value.estimateId + '</option>');
+		  	      });      
+			    });
+		 	});
+		});
+		
+</script>
+	
+	<style>
+   p.clip {
+    white-space: normal; /* Запрещаем перенос строк */
+    overflow: auto; /* Обрезаем все, что не помещается в область */
+    text-overflow: inherit; /* Добавляем многоточие */
+    width: "600px";
+    }
+    
+     p.clip2 {
+    white-space: inherit; /* Запрещаем перенос строк */
+    overflow: scroll; /* Обрезаем все, что не помещается в область */
+    text-overflow: ellipsis; /* Добавляем многоточие */
+    }
+  	</style>
+  	
+</head>
+
+<body>
+
+	<h2>Estimate for design work</h2>
+	
+	<p><a href="#ex1" rel="modal:open">Add new design position</a></p>
+	
+	<p>
+		<label for="selectEstimateId">Select your estimateId:</label> 
+			
+		<select name="selectEstimateId" id="selectEstimateId">
+				<option value="none">.....</option>
+		</select>
+		
+	&nbsp; 
+	&nbsp;
+	&nbsp;
+	
+		<button type="button" id="searchDataByEstimateId" name="searchDataByEstimateId" >Search data by estimateId</button>
+	</p>
+	
+	
+	<table border="1" cellspacing="0" cellpadding="5" id="myTable" class="display nowrap">
+		<thead>
+		<tr>
+			<th>Id</th>
+			<th>Custom name of the project item</th>
+			<th>Name of works according to the collection of prices for
+				design work for construction</th>
+			<th>Specification</th>
+			<th>Cost, thousand tenge</th>
+			<th>Actions</th>
+		</tr>
+		<thead>
+		
+		<tbody id="tableId">
+			<tr>
+			</tr>
+		</tbody>
+	
+	</table>
+	
+	<p>
+		<label>Total cost, thousand tenge:</label> 
+		<input type="number" id="total_sum_value" name="total_sum_value">
+	</p>
+	
+	<p>
+		<button onclick="window.print()">Print this page</button>
+	</p>
+
+	
+	<div id="ex1" class="modal">
+		 
+		<h3>Add new design position</h3> 
+			
+		<p class="clip">
+			<label for="authorName">e-mail</label> 
+			<input type="email" id="authorName" name="authorName" placeholder="write email like name@gmail.com" size="25px" required="required"> </input>
+		</p>
+		
+		<p class="clip">
+			<label for="estimateId">Set estimateId</label> 
+			<input type="number" id="estimateId" name="estimateId" size="10px" placeholder="write number like 1234" required="required"> </input>
+		</p>
+		
+		<p class="clip">
+			<label for="section">Choose a section:</label> 
+			<select name="section" id="section" >
+				<option value="none">list of sections</option>
+			</select>
+		</p>
+
+		<p class="clip">
+			<label for="subsection">Choose a subsection:</label> 
+			<select	name="subsection" id="subsection">
+				<option value="none">list of subsections</option>
+			</select>
+		</p>
+
+		<p class="clip">
+			<label for="chapter">Choose a chapter:</label> <select name="chapter"
+				id="chapter">
+				<option value="none">list of chapters</option>
+			</select>
+		</p>
+
+		<p class="clip">
+			<label for="table_name">Choose a table:</label> 
+			<select	name="table_name" id="table_name">
+				<option value="none">list of tables</option>
+			</select>
+		</p>
+
+		<p class="clip">
+			<label for="position">Choose a position:</label> <select
+				name="position" id="position">
+				<option value="none">list of positions</option>
+			</select>
+		</p>
+
+		<p class="clip">
+			<label>Input custom name of work</label> <input type="text"
+				id="customName" name="customName">
+		</p>
+
+		<p class="clip">
+			<label>Input custom valueX</label> <input type="number" id="valueX"
+				name="valueX"> &nbsp; <input type="text" id="unit"
+				name="unit" size="10px" readonly> </input>
+		</p>
+
+		<p class="clip">
+			<label for="valueXmin">Default value of valueXmin:</label> <input
+				type="number" id="valueXmin" name="valueXmin" size="10px" readonly> </input>
+		</p>
+		
+		<p class="clip">
+			<label for="valueXmax">Default value of valueXmax:</label> <input
+				type="number" id="valueXmax" name="valueXmax" size="10px" readonly> </input>
+		</p>
+		
+		<p class="clip">
+			<label for="valueA">Default value of valueA:</label> <input
+				type="number" id="valueA" name="valueA" size="10px" readonly> </input>
+		</p>
+		
+		<p class="clip">
+			<label for="valueB">Default value of valueB:</label> <input
+				type="number" id="valueB" name="valueB" size="10px" readonly> </input>
+		</p>
+
+		<p class="clip">
+			<label for="valueK">Choose K****:</label> 
+			<select name="valueK" id="valueK">
+				<option value="K1" id="valueK1" name="valueK2">Коэффициент на стадии «проект»</option>
+				<option value="K2" id="valueK2" name="valueK2" selected="selected" >Коэффициент на стадиях «рабочий проект» и «рабочая документация»</option>
+			</select>
+		</p>
+
+
+		<p class="clip">
+			<label for="valueP2">Поправочные коэффициенты при наличии
+				факторов, усложняющих проектирование, P2*</label> 
+				<select name="valueP2" id="valueP2">
+					<option value="1" selected="selected">Не применять, нет указанных факторов</option>
+				</select>
+		</p>
+
+		<p class="clip">
+			<label>Input valueP3**</label> <select name="valueP2" id="valueP3">
+				<option value="1" selected="selected">Не применять, нет указанных факторов</option>
+			</select>
+		</p>
+
+		<p class="clip">
+			<label>Input valueP4***</label> 
+			<select name="valueP4" id="valueP4">
+				<option value="1" selected="selected">Не применять, нет указанных факторов</option>
+			</select>
+		</p>
+		
+		<p>
+			<label for="valueR">Input valueR:</label> 
+			<input	type="number" id="valueR" name="valueR" placeholder="read comments"> </input>
+		</p>
+		
+		<p class="clip">
+			<label>Current date&time</label>
+			<input type="text" id="currenttime" name="currenttime" size="50px" readonly> </input>
+		</p>
+
+		<p class="clip">
+			<input type="submit" id="submit" value="Submit">
+		</p>
+		
+		<a href="#" rel="modal:close" id="close" hidden>Close</a>
+		
+		<br>
+		<button type="button" id="showSubsectionComments" name="showSubsectionComments" >Show/Hide comments for subsection</button>
+		<div id="hide1" style="display:none">
+		<p class="clip2">
+			<textarea id="subsectionComments" name="subsectionComments" rows="25" cols="50" readonly></textarea>
+		</p>
+		</div>
+		
+		<br>
+		<button type="button" id="showChapterComments" name="showChapterComments" >Show/Hide comments for chapter</button>
+		<div id="hide2" style="display:none">
+		<p class="clip2">
+			<textarea id="chapterComments" name="chapterComments" rows="25" cols="50" readonly></textarea>
+		</p>
+		</div>
+		
+		<br>
+		<button type="button" id="showTableComments" name="showTableComments" >Show/Hide comments for table</button>
+		<div id="hide3" style="display:none">
+		<p class="clip2">
+			<textarea id="tableComments" name="tableComments" rows="25" cols="50" readonly></textarea>
+		</p>
+		</div>
+		
+	</div>
+
+
+
+</body>
+
+<script>
+    $(document).ready(function () {
+    		
+     
+        $('#section').one("click", function(){
+           var url = "http://localhost:8080/sectionList";
+           $.getJSON(url, function (data) {
+           
+                $.each(data, function (index, value) {
+                    // APPEND OR INSERT DATA TO SELECT ELEMENT.
+                    $('#section').append('<option value="' + value.section + '">' + value.section + '</option>');
+            		});
+                    
+                });
+            });
+            
+               
+            $('#subsection').one("click", function(){
+            var section = $("#section").val();
+            var url = 'http://localhost:8080/subsectionList/'+section;
+
+            $.getJSON(url, function (data) {
+           
+                $.each(data, function (index, value) {
+                  
+                    $('#subsection').append('<option value="' + value.subsection + '">' + value.subsection + '</option>');
+            		});
+                    
+                });
+            });
+            
+           
+            $('#chapter').one("click", function(){
+            var subsection = $("#subsection").val();
+            var url = 'http://localhost:8080/chapterList/'+subsection;
+
+            $.getJSON(url, function (data) {
+           
+                $.each(data, function (index, value) {
+                  
+                    $('#chapter').append('<option value="' + value.chapter + '">' + value.chapter + '</option>');
+            		});
+                    
+                });
+            });
+            
+ 
+           $('#table_name').one("click", function(){
+            var chapter = $("#chapter").val();
+            var url = 'http://localhost:8080/tableList/'+chapter;
+
+            $.getJSON(url, function (data) {
+           
+                $.each(data, function (index, value) {
+                	
+                    $('#table_name').append('<option value="' + value.tableName + '">' + value.tableName + '</option>');
+            		});
+                    
+                });
+            });
+            
+            $('#table_name').change(function(){
+             
+            	$('#position')
+                .empty()
+                .append('<option value=""> -- Select position-- </option>');
+            	
+            	 $('#position').one("click", function(){
+              	   
+                     var table_name = $("#table_name").val();
+                      
+                     var url = 'http://localhost:8080/positionList/'+table_name;
+
+                     $.getJSON(url, function (data) {
+                    
+                         $.each(data, function (index, value) {
+                              $('#position').append('<option value="' + value.id + '">' + value.position + '</option>');
+                       		});
+                       	});
+              		});
+              });
+            
+            
+            $('#position').change(function(){
+        	   	$('#valueX').empty();  
+                $('#valueXmax').empty();
+		        $('#valueXmin').empty(); 
+		        $('#unit').empty();  
+		        $('#valueA').empty();  
+		        $('#valueB').empty();  
+		        $('#currenttime').empty();
+	          });
+           
+  				
+  			$('#customName').click(function(){
+  				
+						var valueK = $("#valueK").val();
+			            var id = $("#position").val();
+			            var url = 'http://localhost:8080/price/'+id;
+			            			            
+			            var today = new Date();
+
+						var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+						
+						var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+						
+						var dateTime = date+' '+time;
+			           
+						var authorName = $("#authorName").val();
+						$('#currenttime').val(dateTime);
+			   			$('#authorName').val(authorName);
+			   			
+			 	        $.getJSON(url, function (data) {
+			   			        $('#valueXmax').val(parseFloat(data.valueXmax));
+			   			        $('#valueXmin').val(parseFloat(data.valueXmin)); 
+			   			        $('#unit').val(data.unit);  
+			   			        $('#valueA').val(parseFloat(data.valueA));
+			   			        $('#valueB').val(parseFloat(data.valueB));	
+			   			        $('#valueK1').val(parseFloat(data.valueK1));
+			   			        $('#valueK2').val(parseFloat(data.valueK2));
+			   			        
+				   			     if (valueK==K1) {
+						               $('#valueK').append('<option value="' + parseFloat(data.valueK1) + '">' + parseFloat(data.valueK1) + '</option>');
+						             }
+			                   	else {
+			                   	 		$('#valueK').append('<option value="' + parseFloat(data.valueK2) + '">' + parseFloat(data.valueK2) + '</option>');		
+			                   		}
+			   			       
+			               	});
+			       		});
+			       		
+			       		
+  		  $('#valueK').one("click", function(){
+  			  
+  			var valueK = $("#valueK").val();
+            var id = $("#position").val();
+            var url = 'http://localhost:8080/price/'+id;
+    
+            $.getJSON(url, function (data) {
+   			        $('#valueK1').val(parseFloat(data.valueK1));
+   			        $('#valueK2').val(parseFloat(data.valueK2));
+   			        
+	   			    if (valueK==K1) {
+			               $('#valueK').append('<option value="' + parseFloat(data.valueK1) + '">' + parseFloat(data.valueK1) + '</option>');
+			             }
+                   	else {
+                   	 		$('#valueK').append('<option value="' + parseFloat(data.valueK2) + '">' + parseFloat(data.valueK2) + '</option>');		
+                   		}
+   			       
+               	});
+			       		
+  			});	 
+  			  
+  			  
+  			  
+			$('#valueP2').click(function () {
+			    var valueK = $("#valueK").val();
+			    var valueK1 = $("#valueK1").val();
+			    var valueK2 = $("#valueK2").val();
+			    var url = 'http://localhost:8080/application2List';
+			
+			        $.getJSON(url, function (data) {
+			          
+			               $.each(data, function (index, value) {
+			                 	if (valueK==valueK1) {
+			                   		$('#valueP2').append('<option value="' + value.ratio1 + '">' + value.name + '</option>');
+			                   	}
+			                   	else {
+			                   	$('#valueP2').append('<option value="' + value.ratio2 + '">' + value.name + '</option>');
+			                   	}
+				            });
+				    });
+			 	});
+			    
+			    $('#valueP3').click(function () {
+		    	
+			        var url = 'http://localhost:8080/application3List';
+			
+			        $.getJSON(url, function (data) {
+			          
+			               $.each(data, function (index, value) {
+			                 	
+			                   		$('#valueP3').append('<option value="' + value.ratio + '">' + value.name + '</option>');
+			                   
+				            });
+				    });
+			 	});
+			 	
+			 	$('#valueP4').click(function () {
+			        var url = 'http://localhost:8080/application4List';
+			        $.getJSON(url, function (data) {
+				               $.each(data, function (index, value) {
+			                   		$('#valueP4').append('<option value="' + value.ratio + '">' + value.name + '</option>');
+				            });
+				    });
+			 	});
+			 	
+			 	$('#showSubsectionComments').click(function () {
+			 		var subsection = $("#subsection").val();
+		            var url = 'http://localhost:8080/comments/'+subsection;
+			        $.getJSON(url, function (data) {
+		           	 	$('#subsectionComments').val(data.comments);
+	            	 	$("#hide1").toggle();
+		            });
+		  		});
+			 	
+			 	$('#showChapterComments').click(function () {
+			 		var chapter = $("#chapter").val();
+			        var url = 'http://localhost:8080/comments/'+chapter;
+		            $.getJSON(url, function (data) {
+		            	 	$('#chapterComments').val(data.comments);
+		            	 	$("#hide2").toggle();
+		            });
+		  		});
+			 	
+			 	$('#showTableComments').click(function () {
+		            var table = $("#table_name").val();
+		            var url = 'http://localhost:8080/comments/'+table;
+		            $.getJSON(url, function (data) {
+		            	 	$('#tableComments').val(data.comments);
+		            	 	$("#hide3").toggle();
+		            });
+		  		});
+			 	
+	
+});
+       
+</script>
+</html>

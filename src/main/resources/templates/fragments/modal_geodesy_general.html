@@ -1,0 +1,146 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Modal_Project</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<!-- jQuery Modal -->
+<script	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+<link rel="stylesheet" href="/static/css/style2.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
+<script type="text/javascript" src="js/project_modal.js"></script>
+	
+</head>
+
+<body>
+
+<div th:fragment="modal1" id="ex1" class="modal">
+		 
+		<h3>Add new position</h3> 
+			
+		<p class="clip">
+			<label for="authorName">e-mail</label> 
+			<input type="email" id="authorName" name="authorName" placeholder="write email like name@gmail.com" size="25px" required="required"> </input>
+		</p>
+		
+		<p class="clip">
+			<label for="estimateId">Set estimateId</label> 
+			<input type="number" id="estimateId" name="estimateId" size="10px" placeholder="write number like 1234" required="required"> </input>
+		</p>
+		
+		<p class="clip">
+			<label for="section">Choose a section:</label> 
+			<select name="section" id="section" >
+				<option value="none">list of sections</option>
+			</select>
+		</p>
+
+		<p class="clip">
+			<label for="subsection">Choose a subsection:</label> 
+			<select	name="subsection" id="subsection">
+				<option value="none">list of subsections</option>
+			</select>
+		</p>
+
+		<p class="clip">
+			<label for="chapter">Choose a chapter:</label> <select name="chapter"
+				id="chapter">
+				<option value="none">list of chapters</option>
+			</select>
+		</p>
+
+		<p class="clip">
+			<label for="table_name">Choose a table:</label> 
+			<select	name="table_name" id="table_name">
+				<option value="none">list of tables</option>
+			</select>
+		</p>
+
+		<p class="clip">
+			<label for="position">Choose a position:</label> <select
+				name="position" id="position">
+				<option value="none">list of positions</option>
+			</select>
+		</p>
+
+		<p class="clip">
+			<label>Input custom name of work</label> <input type="text"
+				id="customName" name="customName">
+		</p>
+
+		<p class="clip">
+			<label>Input custom valueX</label> 
+			<input type="number" id="valueX" name="valueX"> &nbsp; 
+			<input type="text" id="unit" name="unit" size="10px" readonly> </input>
+		</p>
+
+		<p class="clip">
+			<label for="price">Price:</label> 
+			<input type="number" id="price" name="price" size="10px" readonly> </input>
+		</p>
+		
+		
+		<p>
+			<label for="valueK1">Input valueK1:</label> 
+			<input	type="number" id="valueK1" name="valueK1" placeholder="read comments"> </input>
+		</p>
+		
+		<p>
+			<label for="valueK2">Input valueK2:</label> 
+			<input	type="number" id="valueK2" name="valueK2" placeholder="read comments"> </input>
+		</p>
+		
+		<p>
+			<label for="valueK3">Input valueK3:</label> 
+			<input	type="number" id="valueK3" name="valueK3" placeholder="read comments"> </input>
+		</p>
+		
+		<p>
+			<label for="valueK4">Input valueK4:</label> 
+			<input	type="number" id="valueK4" name="valueK4" placeholder="read comments"> </input>
+		</p>
+		
+		<p class="clip">
+			<label>Current date&time</label>
+			<input type="text" id="currenttime" name="currenttime" size="50px" readonly> </input>
+		</p>
+
+		<p class="clip">
+			<input type="submit" id="submit" value="Submit">
+		</p>
+		
+		<a href="#" rel="modal:close" id="close" hidden>Close</a>
+		
+		<br>
+		<button type="button" id="showSubsectionComments" name="showSubsectionComments" >Show/Hide comments for subsection</button>
+		<div id="hide1" style="display:none">
+		<p class="clip2">
+			<textarea id="subsectionComments" name="subsectionComments" rows="25" cols="50" readonly></textarea>
+		</p>
+		</div>
+		
+		<br>
+		<button type="button" id="showChapterComments" name="showChapterComments" >Show/Hide comments for chapter</button>
+		<div id="hide2" style="display:none">
+		<p class="clip2">
+			<textarea id="chapterComments" name="chapterComments" rows="25" cols="50" readonly></textarea>
+		</p>
+		</div>
+		
+		<br>
+		<button type="button" id="showTableComments" name="showTableComments" >Show/Hide comments for table</button>
+		<div id="hide3" style="display:none">
+		<p class="clip2">
+			<textarea id="tableComments" name="tableComments" rows="25" cols="50" readonly></textarea>
+		</p>
+		</div>
+		
+	</div>
+
+</body>
+</html>
