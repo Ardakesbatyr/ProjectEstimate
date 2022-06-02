@@ -67,6 +67,7 @@
 				
 			
 				$('#submit').click(function (){
+				
 				event.preventDefault();
 				
 				var email = $('#authorName').val();
@@ -106,7 +107,7 @@
 				var currentTime= $('#currenttime').val();
 				
 				var valueR= $('#valueR').val();
-				
+					
 				$.ajax({
 					type: "POST",
 					contentType: "application/json; charset=utf-8",
@@ -254,7 +255,7 @@
 			<th>Custom name of the project item</th>
 			<th>Name of works according to the collection of prices for
 				design work for construction</th>
-			<th>Custom value</th>
+			<th>Specification</th>
 			<th>Cost, thousand tenge</th>
 			<th>Actions</th>
 		</tr>

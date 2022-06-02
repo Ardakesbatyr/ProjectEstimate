@@ -8,7 +8,27 @@ public class IndexController {
 	
 	@GetMapping("/index")
 	public String indexPage() {
-		return "ajax_crud";
+		return "index";
+	}
+	
+	@GetMapping("/project")
+	public String projectPage() {
+		return "project";
+	}
+	
+	@GetMapping("/geodesy")
+	public String geodesyPage() {
+		return "geodesy";
+	}
+	
+	@GetMapping("/geology")
+	public String geologyPage() {
+		return "geology";
+	}
+	
+	@GetMapping("/engineering")
+	public String engineeringPage() {
+		return "engineering";
 	}
 	
 	@GetMapping("/index/calculation")

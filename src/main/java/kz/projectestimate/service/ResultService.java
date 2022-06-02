@@ -65,23 +65,31 @@ public class ResultService {
 		Double valueP4 = result.getValueP4();
 		newResult.setValueP4(valueP4);
 		
+		Double valueR = result.getValueR();
+		
+		if (valueR==null) {
+			valueR=1.0;
+		}
+		
+		newResult.setValueR(valueR);
+		
 		if (valueXmin < valueX && valueX < valueXmax) {
-			Double longDouble = (valueA+valueB*valueX)*valueP2*valueP3*valueP4*valueK;
+			Double longDouble = (valueA+valueB*valueX)*valueP2*valueP3*valueP4*valueK*valueR;
 			int temp = (int)(longDouble*100);
 			double shortDouble = ((double)temp)/100;
 			newResult.setCost(shortDouble);
 		} else if (valueXmin == valueX || valueX == valueXmax) {
-			Double longDouble = (valueA+valueB*valueX)*valueP2*valueP3*valueP4*valueK;
+			Double longDouble = (valueA+valueB*valueX)*valueP2*valueP3*valueP4*valueK*valueR;
 			int temp = (int)(longDouble*100);
 			double shortDouble = ((double)temp)/100;
 			newResult.setCost(shortDouble);
 		} else if (valueX < valueXmin) {
-			Double longDouble = (valueA+valueB*(0.4*valueXmin+0.6*valueX))*valueP2*valueP3*valueP4*valueK;
+			Double longDouble = (valueA+valueB*(0.4*valueXmin+0.6*valueX))*valueP2*valueP3*valueP4*valueK*valueR;
 			int temp = (int)(longDouble*100);
 			double shortDouble = ((double)temp)/100;
 			newResult.setCost(shortDouble);
 		} else if (valueX > valueXmax) {
-			Double longDouble = (valueA+valueB*(0.4*valueXmax+0.6*valueX))*valueP2*valueP3*valueP4*valueK;
+			Double longDouble = (valueA+valueB*(0.4*valueXmax+0.6*valueX))*valueP2*valueP3*valueP4*valueK*valueR;
 			int temp = (int)(longDouble*100);
 			double shortDouble = ((double)temp)/100;
 			newResult.setCost(shortDouble);
@@ -156,23 +164,31 @@ public class ResultService {
 		Double valueP4 = oldResult.getValueP4();
 		newResult.setValueP4(valueP4);
 		
+		Double valueR = oldResult.getValueR();
+		
+		if (valueR==null) {
+			valueR=1.0;
+		}
+		
+		newResult.setValueR(valueR);
+		
 		if (valueXmin < valueX && valueX < valueXmax) {
-			Double longDouble = (valueA+valueB*valueX)*valueP2*valueP3*valueP4*valueK;
+			Double longDouble = (valueA+valueB*valueX)*valueP2*valueP3*valueP4*valueK*valueR;
 			int temp = (int)(longDouble*100);
 			double shortDouble = ((double)temp)/100;
 			newResult.setCost(shortDouble);
 		} else if (valueX == valueXmin || valueX == valueXmax) {
-			Double longDouble = (valueA+valueB*valueX)*valueP2*valueP3*valueP4*valueK;
+			Double longDouble = (valueA+valueB*valueX)*valueP2*valueP3*valueP4*valueK*valueR;
 			int temp = (int)(longDouble*100);
 			double shortDouble = ((double)temp)/100;
 			newResult.setCost(shortDouble);
 		} else if (valueX < valueXmin) {
-			Double longDouble = (valueA+valueB*(0.4*valueXmin+0.6*valueX))*valueP2*valueP3*valueP4*valueK;
+			Double longDouble = (valueA+valueB*(0.4*valueXmin+0.6*valueX))*valueP2*valueP3*valueP4*valueK*valueR;
 			int temp = (int)(longDouble*100);
 			double shortDouble = ((double)temp)/100;
 			newResult.setCost(shortDouble);
 		} else if (valueX > valueXmax) {
-			Double longDouble = (valueA+valueB*(0.4*valueXmax+0.6*valueX))*valueP2*valueP3*valueP4*valueK;
+			Double longDouble = (valueA+valueB*(0.4*valueXmax+0.6*valueX))*valueP2*valueP3*valueP4*valueK*valueR;
 			int temp = (int)(longDouble*100);
 			double shortDouble = ((double)temp)/100;
 			newResult.setCost(shortDouble);

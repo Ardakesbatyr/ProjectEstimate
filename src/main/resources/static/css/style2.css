@@ -50,3 +50,16 @@
 	background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #1e3d47),
 		color-stop(1, #2e5764));
 }
+
+ p.clip {
+    white-space: normal; /* Запрещаем перенос строк */
+    overflow: auto; /* Обрезаем все, что не помещается в область */
+    text-overflow: inherit; /* Добавляем многоточие */
+    width: "600px";
+    }
+    
+     p.clip2 {
+    white-space: inherit; /* Запрещаем перенос строк */
+    overflow: scroll; /* Обрезаем все, что не помещается в область */
+    text-overflow: ellipsis; /* Добавляем многоточие */
+    }
